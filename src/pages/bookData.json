@@ -1,0 +1,41 @@
+
+{
+    "books": [
+        {
+            "id":"ISBN1234",
+            "name":"C# 교과서",
+            "author":"박용준",
+            "publisher":"길벗",
+            "releaseDate":"2020/05/29",
+            "unitPrice":"30000",
+            "unitsInStock":"1000",
+            "description":"C# 교과서』는 생애 첫 프로그래밍 언어로 C#을 시작하는 독자를 대상으로 한다. 특히 응용 프로그래머를 위한 C# 입문서로, C#을 사용하여 게임(유니티), 웹, 모바일, IoT... ",
+            "classification":"IT전문서",
+            "img":"ISBN1234.png"
+        },
+        {
+            "id":"ISBN1235",
+            "name":"Node.js 교과서",
+            "author":"조현영",
+            "publisher":"길벗",
+            "releaseDate":"2020/07/25",
+            "unitPrice":"36000",
+            "unitsInStock":"1000",
+            "description":"이 책은 프런트부터 서버, 데이터베이스, 배포까지 아우르는 광범위한 내용을 다룬다. 군더더기 없는 직관적인 설명으로 기본 개념을 확실히 이해하고, 노드의 기능과 생태계를 사용해보면... ",
+            "classification":"IT전문서",
+            "img":"ISBN1235.png"
+        },
+        {
+            "id":"ISBN1236",
+            "name":"어도비 XD CC 2020",
+            "author":"김두한",
+            "publisher":"길벗",
+            "releaseDate":"2019/05/29",
+            "unitPrice":"25000",
+            "unitsInStock":"1000",
+            "description":"어도비 XD 프로그램을 통해 UI/UX 디자인을 배우고자 하는 예비 디자이너의 눈높이에 맞게 기본적인 도구를 활용한 아이콘 디자인과 웹&앱 페이지 디자인, UI 디자인, 앱 디자인... ",
+            "classification":"IT전문서",
+            "img":"ISBN1236.png"
+        }
+    ]
+}
