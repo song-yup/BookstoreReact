@@ -23,7 +23,7 @@ function LogIn() {
                                     <li><Link to="/add" className="nav-link" role="button">Add Book</Link></li>
                                     <li className="nav-item"><a className="nav-link" href="#">Cart</a></li>
                                     <li className="nav-item"><a className="nav-link" href="#">My Page</a></li>
-                                    <li className="nav-item"><a className="nav-link" href="#">Join</a></li>
+                                    <li><Link to="/join" className="nav-link" role="button">Join</Link></li>
                                     <li><Link to="/login" className="nav-link" role="button">Log In</Link></li>
                                 </ul>    
                             </div>
@@ -38,24 +38,22 @@ function LogIn() {
                     </Container>
                 </Jumbotron>
 
-                <Container>
-                    <Col md={4}>
+                <div className="container col-md-4">
                         <div className="text-center">
                             <h3 className="form-signin-heading">Please Sign In</h3>
                         </div>
                         <form className="form-signin" action="#" method="POST">
                             <div className="form-group row">
-                                <input type="text" name="username" className="form-control" placeholder="User Name" />
+                                <input type="text" name="username" className="form-control" placeholder="User Name" required />
                             </div>
                             <div className="form-group row">
-                                <input type="password" name="password" className="form-control" placeholder="PassWord" />   
+                                <input type="password" name="password" className="form-control" placeholder="PassWord" required />   
                             </div>
                             <div className="form-group row">
                                 <button className="btn btn-lg btn-success btn-block" action="#" type="submit">로그인</button>                            
                             </div>                
                         </form>
-                    </Col>
-                </Container>
+                </div>
             </body>
         </html>        
     )

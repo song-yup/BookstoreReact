@@ -7,6 +7,7 @@ import Book from '././pages/book.js';
 import Home from '././pages/home.js';
 import LogIn from './pages/login.js';
 import AddBook from './pages/addBook.js';
+import Join from './pages/join.js';
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/books/book/:id" element={<Book />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/add" element={<AddBook />} />
+        <Route path="/join" element={<Join />} />
       </Routes>
     </Router>
     );

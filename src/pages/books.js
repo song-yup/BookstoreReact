@@ -33,7 +33,7 @@ function Books() {
                                 <li><Link to="/add" className="nav-link" role="button">Add Book</Link></li>
                                 <li className="nav-item"><a className="nav-link" href="#">Cart</a></li>
                                 <li className="nav-item"><a className="nav-link" href="#">My Page</a></li>
-                                <li className="nav-item"><a className="nav-link" href="#">Join</a></li>
+                                <li><Link to="/join" className="nav-link" role="button">Join</Link></li>
                                 <li><Link to="/login" className="nav-link" role="button">Log In</Link></li>
                             </ul>    
                         </div>
