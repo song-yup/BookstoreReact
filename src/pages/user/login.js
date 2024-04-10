@@ -22,7 +22,7 @@ function LoginForm() {
   };
 
   // 폼 제출 이벤트 핸들러
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const axiosConfig = {
@@ -36,7 +36,9 @@ function LoginForm() {
       password: password,
     };
 
-    axios.post(`/loginProc`, qs.stringify(axiosBody), axiosConfig)
+    const url = "/loginProc"
+
+    await axios.post(`${url}`,qs.stringify(axiosBody), axiosConfig)
     .then((response) => {
       if (response.data.includes("main page")) {
         console.log('로그인 성공:', response.data);
@@ -47,13 +49,14 @@ function LoginForm() {
       } else {
         console.error('로그인 실패: "main page" 문자열이 포함되어 있지 않습니다');
         alert('로그인 실패했습니다: 사용자 이름 또는 비밀번호가 일치하지 않습니다.');
-        window.location.reload();
+        // window.location.reload();
       }
     })
     .catch((error) => {
-      console.error('서버 에러:', error);
-      alert('로그인 실패했습니다: 서버 에러가 발생했습니다.');
-      window.location.reload();
+      console.error('서버 에러:', error );
+
+      alert('로그인 실패했습니다: 서버 에러가 발생했습니다.',error);
+      // window.location.reload();
     });
   };  
 

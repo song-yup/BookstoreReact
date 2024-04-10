@@ -3,11 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
+
 function Books() {
     const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const [bookname, setBookname] = useState('');
-    const url="http://localhost:8080/api/books";
+    const url="/api/books";
 
     useEffect(() => {
         axios.get(`${url}`)
@@ -55,12 +56,14 @@ function Books() {
                 <div className="row" align="center">
                     {books && books.map((book) => (
                         <div className="col-md-4" key={book.id}>
-                            <img src={book.imageurl} style={{width:'60%'}}></img>
+                            <Link to={`/books/book/${book.id}`} className="btn btn-Secondary" role="button">
+                                <img src={book.imageurl} style={{width:'60%'}} />
+                            </Link>
                             <h4>{book.bookname}</h4>
                             <p>{book.author}</p>
                             {book.publisher} | {book.releasedate}
                             <p>₩{book.price}</p>
-                            <Link to={`/books/book/${book.id}`} className="btn btn-Secondary" role="button">상세정보 &raquo;</Link>
+                            {/* <Link to={`/books/book/${book.id}`} className="btn btn-Secondary" role="button">상세정보 &raquo;</Link> */}
                             <br />
                         </div>
                     ))}

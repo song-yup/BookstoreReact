@@ -18,7 +18,9 @@ import NewBooks from './pages/book/newbooks.js';
 import Categorybooks from './pages/book/categorybooks.js';
 import RankingBooks from './pages/book/rankingbooks.js';
 import Searchbooks from './pages/book/searchbooks.js';
+import MobileMenubar from './layouts/mobilemenubar.js';
 import { AuthProvider } from './pages/user/authcontext.js';
+import { Mobile,PC } from './pages/reactresponsive.js';
 
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -29,7 +31,12 @@ function App() {
     return (
     <AuthProvider>
     <Router>
-      <Menubar />
+      <Mobile>
+        <MobileMenubar />
+      </Mobile>
+      <PC>
+        <Menubar />
+      </PC>
       
       <Routes>
         <Route path="/books" element={<Books />} />

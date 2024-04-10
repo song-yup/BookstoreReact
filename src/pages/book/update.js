@@ -12,7 +12,7 @@ function Update() {
     useEffect(() => {
         if(id) {
             console.log(id);
-            const bookurl = `http://localhost:8080/api/books/${id}`;
+            const bookurl = `/api/books/${id}`;
             axios.get(`${bookurl}`)
             .then(response => setBook(response.data))
             .catch(error => console.log(error));
@@ -23,7 +23,7 @@ function Update() {
         return <div>Book Not Found!</div>;
     }
 
-    const url = `http://localhost:8080/api/books/${id}`;
+    const url = `/api/books/${id}`;
 
     const onChange = (event) => {
         const { value, name } = event.target;

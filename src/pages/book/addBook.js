@@ -11,7 +11,7 @@ function AddBook() {
         }
     );
 
-    const url="http://localhost:8080/api/books";
+    const url="/api/books";
 
     const onChange = (event) => {
         const { value, name } = event.target;

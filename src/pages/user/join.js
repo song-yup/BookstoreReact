@@ -7,7 +7,7 @@ function Join() {
     const navigate = useNavigate();
     const [user, setUser] = useState([]);
 
-    const url="http://localhost:8080/api/joinProc";
+    const url="/api/joinProc";
 
     const onChange = (event) => {
         const { value, name } = event.target;

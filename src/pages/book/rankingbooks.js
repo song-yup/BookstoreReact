@@ -5,7 +5,7 @@ import axios from 'axios';
 
 function RankingBooks() {
     const [books, setBooks] = useState([]);
-    const url="http://localhost:8080/api/books/ranking";
+    const url="/api/books/ranking";
 
     useEffect(() => {
         axios.get(`${url}`)

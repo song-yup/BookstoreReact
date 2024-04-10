@@ -9,7 +9,7 @@ function Categorybooks() {
     const { category } = useParams('');
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/${category}/books`)
+        axios.get(`/api/${category}/books`)
         .then(response => setBooks(response.data))
         .catch(error => console.log(error))
     }, [category]);

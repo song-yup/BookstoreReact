@@ -10,7 +10,7 @@ function Searchbooks() {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/books/search/${bookname}`)
+        axios.get(`/api/books/search/${bookname}`)
         .then(response => {
             if(response.data.length ===  0) {
                 alert("검색 결과가 없습니다.");

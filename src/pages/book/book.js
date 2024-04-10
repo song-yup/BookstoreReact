@@ -17,7 +17,7 @@ function Book() {
 
     useEffect(() => {
         if(id) {
-            const url = `http://localhost:8080/api/books/${id}`;
+            const url = `/api/books/${id}`;
             const commenturl = `/api/books/${id}/comments`;
 
             axios.get(`${url}`)
@@ -37,7 +37,7 @@ function Book() {
 
     const deleteBook = async (id) => {
         try {
-          await axios.delete(`http://localhost:8080/api/books/${id}`);
+          await axios.delete(`/api/books/${id}`);
           alert('삭제되었습니다.');
           navigate("/books")
         } catch (error) {
