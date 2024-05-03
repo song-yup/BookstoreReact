@@ -5,7 +5,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { useAuth } from '../pages/user/authcontext';
 
 
-const Menubar = () => {  
+const Clientmenubar = () => {  
     const { isLoggedIn, logout } = useAuth();  
     
     return (
@@ -43,9 +43,7 @@ const Menubar = () => {
                                     <Dropdown.Item as={Link} to={`/시_에세이/books`}>시_에세이</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
-                                
-                            <li><Link to="/books/add" className='nav-link' role='button'>도서 추가</Link></li>
-                                
+                                                            
                         </ul>
                     </div>
                     </div>
@@ -54,4 +52,4 @@ const Menubar = () => {
     );
 }
 
-export default Menubar;
+export default Clientmenubar;

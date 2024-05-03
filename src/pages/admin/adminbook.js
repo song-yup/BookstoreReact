@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
-function Book() {
+function Adminbook() {
     const navigate = useNavigate();
 
     const { id } = useParams();
@@ -36,55 +36,14 @@ function Book() {
         return <div>Book Not Found!</div>;
     }
 
-    // const deleteBook = async (id) => {
-    //     try {
-    //       await axios.delete(`/api/books/${id}`);
-    //       alert('삭제되었습니다.');
-    //       navigate("/books")
-    //     } catch (error) {
-    //       console.error("삭제에 실패했습니다:", error);
-    //       alert('삭제에 실패했습니다.');
-    //     }
-    // }
-
-    const cart = async () => {
+    const deleteBook = async (id) => {
         try {
-            await axios.post(`/api/books/${id}/cart`, {
-                "quantity": cartQuantity,
-                "bookId":id
-            });
-            alert('장바구니에 추가되었습니다.');
+          await axios.delete(`/api/books/${id}`);
+          alert('삭제되었습니다.');
+          navigate("/admin/adminbooks")
         } catch (error) {
-            console.error(error)
-            alert('장바구니 추가에 실패했습니다.');
-        }
-    }
-
-
-    const purchase = async () => { // id 파라미터 제거
-        try {
-            await axios.post(`/api/books/${id}/purchase`, {
-                "quantity": purchaseQuantity, // 상태를 사용하여 quantity 설정
-                "bookId": id
-            });
-            alert('구매목록에 추가되었습니다.');
-        } catch (error) {
-            console.error(error);
-            alert('구매목록 추가에 실패했습니다.');
-        }
-    };
-
-    const createcomment = async (event) => {
-        event.preventDefault();
-        try {
-            await axios.post(`/api/books/${id}/comments`, {
-                "bookId": id,
-                "content": newcomment
-            })
-            alert('댓글이 추가되었습니다.');
-        } catch (error) {
-            console.error(error)
-            alert('댓글 추가에 실패했습니다.');
+          console.error("삭제에 실패했습니다:", error);
+          alert('삭제에 실패했습니다.');
         }
     }
 
@@ -97,11 +56,6 @@ function Book() {
             alert('댓글 삭제에 실패했습니다.');
           }
     }
-
-    const startEdit = (comment) => {
-        setEditingCommentId(comment.id);
-        setEditingContent(comment.content);
-    };
 
     const saveComment = async (id) => {
         try {
@@ -121,13 +75,13 @@ function Book() {
     return (
         <html>
             <head>
-                <title>도서 정보</title>
+                <title>관리자 도서 정보</title>
             </head>
 
             <body>
                 <div className="jumbotron"> 
                     <div className="container">
-                        <h1 className="display-3" align="center">도서 정보</h1>
+                        <h1 className="display-3" align="center">관리자 도서 정보</h1>
                         <h5 className="display-5" align="center">Book Details</h5>
                     </div>
                 </div>
@@ -172,7 +126,7 @@ function Book() {
                                             <>
                                                 {comment.content}
                                                 <div className="float-right">
-                                                    <button className="btn btn-success" onClick={() => startEdit(comment)}>수정 &raquo;</button>              
+                                                    {/* <button className="btn btn-success" onClick={() => startEdit(comment)}>수정 &raquo;</button>               */}
                                                     <button className="btn btn-danger" onClick={() => deletecomment(comment.id)}>삭제 &raquo;</button>
                                                 </div>
                                             </>
@@ -189,7 +143,7 @@ function Book() {
 
                             <br />
 
-                            <b>댓글 작성</b>
+                            {/* <b>댓글 작성</b>
                             <form onSubmit={createcomment} className="form-horizontal">
                                 <div className="d-flex">
                                     <div className="col-sm-8">
@@ -199,17 +153,17 @@ function Book() {
                                         <button type="submit" className="btn btn-primary">등록</button>      
                                     </div>
                                 </div>                                         
-                            </form>
+                            </form> */}
 
 
                             <br />
-                            {/* <Link to={`/books/book/update/${book.id}`} className="btn btn-success" role="button">책 수정 &raquo;</Link>
-                            <Link to={`/books/book/delete/${book.id}`} className="btn btn-danger"  onClick={() => deleteBook(book.id)} role="button">책 삭제 &raquo;</Link> */}
+                            <Link to={`/books/book/update/${book.id}`} className="btn btn-success" role="button">책 수정 &raquo;</Link>
+                            <Link to={`/books/book/delete/${book.id}`} className="btn btn-danger"  onClick={() => deleteBook(book.id)} role="button">책 삭제 &raquo;</Link>
 
                             <br />
                             <br />
 
-                            <div>
+                            {/* <div>
                                 <label htmlFor="purchaseQuantity">장바구니 수량 선택 : </label>
                                 <select 
                                     id="purchaseQuantity"
@@ -239,13 +193,13 @@ function Book() {
                                     ))}
                                 </select>
                                 <button className="btn btn-danger" onClick={purchase}>바로 구매하기 &raquo;</button>
-                            </div>
+                            </div> */}
                             
                             <br />
                             <br />
 
-                            <Link to={`/books`} className="btn btn-secondary">도서목록 &raquo;</Link>
-                            <Link to={`/cart`} className="btn btn-warning">장바구니 &raquo;</Link>
+                            <Link to={`/admin/adminbooks`} className="btn btn-secondary">도서목록 &raquo;</Link>
+                            {/* <Link to={`/cart`} className="btn btn-warning">장바구니 &raquo;</Link> */}
 
                         </div>
                     </div>
@@ -255,4 +209,4 @@ function Book() {
     )
 }
 
-export default Book;
+export default Adminbook;

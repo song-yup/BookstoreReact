@@ -37,7 +37,7 @@ function Update() {
         e.preventDefault();
         await axios.patch(`${url}`, book).then((res) => {
             alert('수정되었습니다');
-            navigate("/books/book/" + book.id)
+            navigate("/admin/adminbook/" + book.id)
         }).catch((error) => {
             console.error("수정에 실패했습니다:", error);
             alert('수정에 실패했습니다');

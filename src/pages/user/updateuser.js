@@ -33,6 +33,7 @@ function UpdateUser() {
     if(!user) {
         return <div>User Not Found!</div>;
     }
+    
     const url = `/api/mypage`;
 
     const onChange = (event) => {

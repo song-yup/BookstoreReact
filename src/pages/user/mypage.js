@@ -148,7 +148,7 @@ function Mypage() {
                     </div>
                     
                     <Link to={`/mypage/update`} className="btn btn-success" onClick={() => updateUser()} role="button">회원수정 &raquo;</Link>
-                    <Link to={`/mypage/delete`} className="btn btn-danger"  onClick={() => deleteUser()} role="button">회원탈되 &raquo;</Link>
+                    <Link to={`/mypage/delete`} className="btn btn-danger"  onClick={() => deleteUser()} role="button">회원탈퇴 &raquo;</Link>
                     <Link to={`/cart`} className="btn btn-secondary" role="button">장바구니 &raquo;</Link> 
                     <Link to={`/purchase`} className="btn btn-secondary" role="button">구매목록 &raquo;</Link> 
                 </div>

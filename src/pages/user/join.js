@@ -5,7 +5,20 @@ import axios from 'axios';
 
 function Join() {
     const navigate = useNavigate();
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState({
+        username: "",
+        password: "",
+        email: "",
+        phoneNum: "",
+        address: ""
+    });
+    const [errors, setErrors] = useState({
+        username: "",
+        password: "",
+        email: "",
+        phoneNum: "",
+        address: ""
+    });
 
     const url="/api/joinProc";
 
@@ -14,6 +27,11 @@ function Join() {
         setUser({
             ...user,
             [name]: value,
+        });
+        // 입력이 변경될 때 해당 필드의 오류를 초기화
+        setErrors({
+            ...errors,
+            [name]: "",
         });
     };
 
@@ -24,7 +42,25 @@ function Join() {
             navigate("/login")
         }).catch((error) => {
             console.error("회원 가입에 실패했습니다:", error);
-            alert('회원 가입에 실패했습니다');
+            if (error.response && error.response.data) {
+                const errorData = error.response.data;
+                // 서버로부터 받은 오류 메시지를 해당 필드에 맞게 설정
+                setErrors({
+                    username: errorData.username || "",
+                    password: errorData.password || "",
+                    email: errorData.email || "",
+                    phoneNum: errorData.phoneNum || "",
+                    address: errorData.address || ""
+                });
+            } else {
+                setErrors({
+                    username: "아이디가 이미 존재합니다.",
+                    password: "",
+                    email: "",
+                    phoneNum: "",
+                    address: ""
+                });
+            }
         });
     };
 
@@ -46,28 +82,53 @@ function Join() {
                         <h3 className="form-signin-heading">Please Create Your Accout</h3>
                     </div>
                     <form onSubmit={saveUser} className="form-horizontal">
+                        {/* 폼 입력 요소들 */}
                         <div className="form-group row">
-                            UserName <input name="username" value={user.username} className="form-control" onChange={onChange} placeholder="User Nams" required />
+                            UserName <input name="username" value={user.username} className="form-control" onChange={onChange} placeholder="User Name" />
                         </div>
-                        <div className="form-group row">
-                            비밀번호 <input type="password" name="password" value={user.password} className="form-control" onChange={onChange} placeholder="Password" required />
+                        {errors.username && (
+                        <div className="alert alert-danger" role="alert">
+                            {errors.username}
                         </div>
+                    )}
                         <div className="form-group row">
-                            이메일 <input name="email" value={user.email} className="form-control" onChange={onChange} placeholder="E-Mail" required />
+                            비밀번호 <input type="password" name="password" value={user.password} className="form-control" onChange={onChange} placeholder="Password" />
                         </div>
-                        <div className="form-group row">
-                            전화번호 <input name="phoneNum" value={user.phoneNum} className="form-control" onChange={onChange} placeholder="Phone Num" required />
+                        {errors.password && (
+                        <div className="alert alert-danger" role="alert">
+                            {errors.password}
                         </div>
+                    )}
                         <div className="form-group row">
-                            주소 <input name="address" value={user.address} className="form-control" onChange={onChange} placeholder="Address" required />
+                            이메일 <input name="email" value={user.email} className="form-control" onChange={onChange} placeholder="E-Mail" />
                         </div>
+                        {errors.email && (
+                        <div className="alert alert-danger" role="alert">
+                            {errors.email}
+                        </div>
+                    )}
                         <div className="form-group row">
-                            <button class="btn btn-lg btn-success btn-block" type="submit">회원가입</button>                
+                            전화번호 <input name="phoneNum" value={user.phoneNum} className="form-control" onChange={onChange} placeholder="Phone Num" />
+                        </div>
+                        {errors.phoneNum && (
+                        <div className="alert alert-danger" role="alert">
+                            {errors.phoneNum}
+                        </div>
+                    )}
+                        <div className="form-group row">
+                            주소 <input name="address" value={user.address} className="form-control" onChange={onChange} placeholder="Address" />
+                        </div>
+                        {errors.address && (
+                        <div className="alert alert-danger" role="alert">
+                            {errors.address}
+                        </div>
+                    )}
+                        {/* 폼 하단 버튼 */}
+                        <div className="form-group row">
+                            <button className="btn btn-lg btn-success btn-block" type="submit">회원가입</button>                
                         </div>
                     </form>                    
                 </div>
-
-
             </body>
         </html>
     )

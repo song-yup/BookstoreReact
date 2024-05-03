@@ -25,7 +25,7 @@ function AddBook() {
         e.preventDefault();
         await axios.post(`${url}`, book).then((res) => {
             alert('등록되었습니다');
-            navigate("/books/book/" + book.id)
+            navigate("/admin/adminbooks")
         }).catch((error) => {
             console.error("등록에 실패했습니다:", error);
             alert('등록에 실패했습니다');
@@ -59,14 +59,14 @@ function AddBook() {
                     <legend>신규 도서 등록</legend>
                     <form onSubmit={saveBook} className="form-horizontal">
 
-                        <div className="form-group row">
+                        {/* <div className="form-group row">
                             <label className="col-sm-2 control-label">
                                 도서 ID
                             </label>
                             <div className="col-sm-3">
                                 <input name="id" value={book.id} onChange={onChange} className="form-control" />
                             </div>
-                        </div>
+                        </div> */}
                         
                         <div className="form-group row">
                             <label className="col-sm-2 control-label">

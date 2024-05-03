@@ -2,21 +2,29 @@ import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-// import { MDBInputGroup, MDBInput, MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
 
-
-function Books() {
+function Adminbooks() {
     const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const [bookname, setBookname] = useState('');
-    const url="/api/books";
+    const [statusCode, setStatusCode] = useState(null);
+    const url="/api/admin/books";
 
     useEffect(() => {
         axios.get(`${url}`)
-        .then(response => setBooks(response.data))
-        .catch(error => console.log(error))
+        .then(response => {
+            setBooks(response.data);
+            setStatusCode(response.status); // 응답에서 상태 코드를 설정
+        })
+        .catch(error => {
+            console.log(error);
+            // 에러 응답에서 상태 코드가 존재하는 경우 설정
+            if (error.response) {
+                setStatusCode(error.response.status);
+            }
+        })
     }, []);
-
+    
     const booknamechage = (event) => {
         setBookname(event.target.value);
     };
@@ -33,16 +41,22 @@ function Books() {
         }
     };
     
+    if(statusCode === 403) {
+        return <h3>권한이 없습니다!</h3>;
+    }
+
+    
     return (
         <html>
             <head>
-                <title>도서 목록</title>
+                <title>관리자 도서 목록</title>
             </head>
 
             <body>
+
                 <div className="jumbotron"> 
                     <div className="container">
-                        <h1 className="display-3" align="center">도서 목록</h1>
+                        <h1 className="display-3" align="center">관리자 도서 목록</h1>
                         <h5 className="display-5" align="center">Books List</h5>
                     </div>
                 </div> 
@@ -59,14 +73,14 @@ function Books() {
                     {books && books.map((book) => (
                         <div className="col-12 d-flex mb-4" key={book.id}>
                             <div>
-                                <Link to={`/books/book/${book.id}`}>
+                                <Link to={`/admin/adminbook/${book.id}`}>
                                     <br />
                                     <img src={book.imageurl} style={{width:'70%'}} alt={book.bookname} />
                                 </Link>
                             </div>
                             <div>
                                 <br />
-                                <Link to={`/books/book/${book.id}`}>
+                                <Link to={`/admin/adminbook/${book.id}`}>
                                     <h3>{book.bookname}</h3>
                                 </Link>
                                 <p>{book.author}</p>
@@ -81,8 +95,8 @@ function Books() {
             </div>
             
             </body>
-        </html>        
+        </html>      
     );
 }
 
-export default Books;
+export default Adminbooks;

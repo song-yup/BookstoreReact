@@ -40,33 +40,35 @@ function LoginForm() {
 
     await axios.post(`${url}`,qs.stringify(axiosBody), axiosConfig)
     .then((response) => {
-      if (response.data.includes("main page")) {
+      if (response.status === 200) {
         console.log('로그인 성공:', response.data);
         alert('로그인 성공했습니다');
         login();
         navigate("/books");
         // window.location.reload();
-      } else {
-        console.error('로그인 실패: "main page" 문자열이 포함되어 있지 않습니다');
-        alert('로그인 실패했습니다: 사용자 이름 또는 비밀번호가 일치하지 않습니다.');
-        // window.location.reload();
-      }
+      } 
     })
     .catch((error) => {
       console.error('서버 에러:', error );
 
-      alert('로그인 실패했습니다: 서버 에러가 발생했습니다.',error);
+      alert('로그인 실패했습니다: 사용자 이름 또는 비밀번호가 일치하지 않습니다.');
       // window.location.reload();
     });
-  };  
+  };
 
 
   return (
-    <div>
-        <div className="jumbotron"> 
+    <html>
+      <head>
+          <title>로그인</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+      </head>
+      <body>
+        <div>
+          <div className="jumbotron"> 
             <div className="container">
-                <h1 className="display-3" align="center">로그인</h1>
-                <h5 className="display-5" align="center">Log In</h5>
+              <h1 className="display-3" align="center">로그인</h1>
+              <h5 className="display-5" align="center">Log In</h5>
             </div>
         </div>
 
@@ -93,8 +95,10 @@ function LoginForm() {
                 <Link to={'/join'} className="btn btn-lg btn-danger btn-block" role="button">회원가입</Link>
             </div>
         </div>
-    </div>        
-)
+    </div>
+    </body>        
+  </html>
+  )
 }
 
 
