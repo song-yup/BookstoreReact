@@ -25,11 +25,12 @@ function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const axiosConfig = {
+    const axiosConfig = axios.create ({
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
-    };
+        "Content-Type": "application/x-www-form-urlencoded" //모든 문자들은 서버로 보내기 전 인코딩됩니다
+      },
+      withCredentials: true,
+    });
 
     const axiosBody = {
       username: username,
@@ -45,14 +46,13 @@ function LoginForm() {
         alert('로그인 성공했습니다');
         login();
         navigate("/books");
-        // window.location.reload();
+
       } 
     })
     .catch((error) => {
       console.error('서버 에러:', error );
-
       alert('로그인 실패했습니다: 사용자 이름 또는 비밀번호가 일치하지 않습니다.');
-      // window.location.reload();
+      window.location.reload();
     });
   };
 
@@ -76,24 +76,24 @@ function LoginForm() {
             <div className="text-center">
                 <h3 className="form-signin-heading">Please Sign In</h3>
             </div>
-
+            
             <form className="form-signin" onSubmit={handleSubmit}>
                 <div className="form-group row">
-                    <input type="text" name="username" className="form-control" placeholder="User Name" required 
-                        value={username} onChange={handleUsernameChange} />
+                      <input type="text" name="username" className="form-control" placeholder="User Name" required 
+                      value={username} onChange={handleUsernameChange} />
                 </div>
                 <div className="form-group row">
                     <input type="password" name="password" className="form-control" placeholder="PassWord" required 
-                        value={password} onChange={handlePasswordChange} />   
+                    value={password} onChange={handlePasswordChange} />   
                 </div>
                 <div className="form-group row">
                     <button className="btn btn-lg btn-success btn-block" type="submit">로그인</button>
                 </div>                
             </form>
             
-            <div className="form-group row">
+            {/* <div className="form-group row">
                 <Link to={'/join'} className="btn btn-lg btn-danger btn-block" role="button">회원가입</Link>
-            </div>
+            </div> */}
         </div>
     </div>
     </body>        

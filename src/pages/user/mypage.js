@@ -2,12 +2,23 @@ import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import qs from 'qs';
+import { useAuth } from "./authcontext";
 
 function Mypage() {
-    const navigate = useNavigate(); // useNavigate 훅 사용
-    const [user, setUser] = useState(); // 초기값을 빈 배열 대신 null로 설정
+    const navigate = useNavigate();
+    const [user, setUser] = useState(); 
     const [comments, setComments] = useState([]);
+    const { isLoggedIn, logout } = useAuth();
+
+    const [show, setShow] = useState(null);
+    const handleClose = () => setShow(null);
+    const handleShow = (modalType) => setShow(modalType);
+
+    const [password, setPassword] = useState('');
 
     const showmycomment = async () => {
         try {
@@ -22,10 +33,9 @@ function Mypage() {
         const fetchUser = async () => {
             try {
                 const response = await fetch(`/api/mypage`, {
-                    method: 'GET', // 메소드 명시
+                    method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json', // 요청 헤더에 Content-Type 명시
-                        // 필요하다면 인증 토큰 등을 여기에 추가
+                        'Content-Type': 'application/json',
                     },
                 });
                 if(response.ok) {
@@ -43,61 +53,63 @@ function Mypage() {
     }, []);
   
     if(!user) {
-        return <div>User Not Found!</div>;
-    }
-
-    const logout = async () => {
-        try {
-            await axios.post(`/logout`);
-            alert('로그아웃 되었습니다.');
-            navigate("/login"); 
-        } catch (error) {
-            console.error("로그아웃에 실패했습니다:", error);
-            alert('로그아웃에 실패했습니다.');
-        }
+        return <h2>My Page Loading...</h2>
     }
 
     const deleteUser = async () => {
-        // confirm 함수를 사용하여 사용자에게 확인을 요청합니다.
-        const isConfirmed = window.confirm("회원 탈퇴를 하시겠습니까?");
-    
-        // 사용자가 확인을 누른 경우에만 삭제 요청을 진행합니다.
-        if (isConfirmed) {
-            try {
-                await axios.delete(`api/mypage`);
-                alert('삭제되었습니다.');
-                navigate("/books")
-            } catch (error) {
-                console.error("삭제에 실패했습니다:", error);
-                navigate("/mypage");
-                alert('삭제에 실패했습니다.');
+        const axiosConfig = {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
             }
-        }
-        else {
-            window.location.reload();
-        }
-        // 사용자가 취소를 누른 경우, 삭제 요청을 진행하지 않습니다.
+        };
+
+        const axiosBody = {
+            username: user.username,
+            password: password,
+        };
+
+        const url = "/loginProc"
+        await axios.post(`${url}`,qs.stringify(axiosBody), axiosConfig)
+        .then((response) => {
+          if (response.status === 200) {
+            axios.delete(`api/mypage`);
+            alert('탈퇴가 완료 되었습니다.');
+            logout();
+            navigate("/login")
+          } 
+        })
+        .catch((error) => {
+          console.error('서버 에러:', error );
+          alert('비밀번호가 틀렸습니다. 다시 시도해주세요.');
+          window.location.reload();
+        });
     }
     
     const updateUser =  async () => {
-        const isConfirmed = window.confirm("회원 수정를 하시겠습니까?");
-        if(isConfirmed) {
+        const axiosConfig = {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            }
+        };
 
-        }   else {
-            window.location.reload();
-        }
+        const axiosBody = {
+            username: user.username,
+            password: password,
+        };
 
+        const url = "/loginProc"
+        await axios.post(`${url}`,qs.stringify(axiosBody), axiosConfig)
+        .then((response) => {
+          if (response.status === 200) {
+            navigate("/mypage/update");
+          } 
+        })
+        .catch((error) => {
+          console.error('서버 에러:', error );
+          alert('비밀번호가 틀렸습니다. 다시 시도해주세요.');
+          window.location.reload();
+        });
     }
-
-    // const showmycomment = async () => {
-    //     try {
-    //         const response = await axios.get(`/api/mypage/comments`);
-    //         setComments(response.data);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
-
 
     return (
         <html>
@@ -113,46 +125,125 @@ function Mypage() {
                     </div>
                 </div>
 
-                <div className="container col-md-4">
+                <div className="container col-md-6">
                     <div className="text-center">
                         <h3 className="form-signin-heading">Check My Account</h3>
                     </div>
-
-                    <form>
-                        <button type="button" className="btn btn-danger" onClick={logout}>로그아웃</button>
-                    </form>
-        
-                    <div className="form-group row">
-                        고객 ID : {user.username}
+                    <div className="text-center mt-4">
+                        <p><strong>고객 ID</strong> : {user.username}</p>
                     </div>
 
-                    <div className="form-group row">
-                        전화 번호 : {user.phoneNum}
+                    <div className="text-center">
+                        <p><strong>전화 번호</strong> : {user.phoneNum}</p>
                     </div>
 
-                    <div className="form-group row">
-                        e-mail : {user.email}
+                    <div className="text-center">
+                        <p><strong>e-mail</strong> : {user.email}</p>
                     </div>
 
-                    <div className="form-group row">
-                        주소 : {user.address}
+                    <div className="text-center mb-4">
+                        <p><strong>주소</strong> : {user.address}</p>
                     </div>
 
-                    <div>
-                        <h2>내가 작성한 댓글</h2>
-                        <ul>
+
+                    <div className="container">
+                        <div className="text-center">
+                            <h5><strong>내가 작성한 댓글</strong></h5>
+                        </div>
+                        <div className="text-center">
                             {showmycomment && comments && comments.map((comment) => (
-                                <li key={comment.id}>{comment.bookname}: {comment.content}</li>
+                                <li key={comment.id}><Link to={`/books/book/${comment.bookId}`}>{comment.bookname}</Link>: {comment.content}</li>
                             ))}
-                        </ul>
+                        </div>
                     </div>
                     
-                    <Link to={`/mypage/update`} className="btn btn-success" onClick={() => updateUser()} role="button">회원수정 &raquo;</Link>
-                    <Link to={`/mypage/delete`} className="btn btn-danger"  onClick={() => deleteUser()} role="button">회원탈퇴 &raquo;</Link>
-                    <Link to={`/cart`} className="btn btn-secondary" role="button">장바구니 &raquo;</Link> 
-                    <Link to={`/purchase`} className="btn btn-secondary" role="button">구매목록 &raquo;</Link> 
-                </div>
+                    {/* <Link to={`/mypage/update`} className="btn btn-success" onClick={() => updateUser()} role="button">회원수정 &raquo;</Link>
+                    &nbsp;
+                    <Link to={`/mypage/delete`} className="btn btn-danger"  onClick={() => deleteUser()} role="button">회원탈퇴 &raquo;</Link> */}
+                    
+                    <br />
 
+                    <div className="container">
+                        <div className="text-center">
+
+                    <Button variant="success" onClick={() => handleShow('update')}>
+                        회원 수정
+                    </Button>
+                    &nbsp;
+                    {show === 'update' && (
+                        <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>비밀번호 확인</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="비밀번호를 입력하세요."
+                                            autoFocus
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="primary" onClick={updateUser}>
+                                    확인
+                                </Button>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    취소
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    )}
+                        
+                    <Button variant="danger" onClick={() => handleShow('delete')}>
+                        회원 탈퇴
+                    </Button>
+                    &nbsp;
+                    {show === 'delete' && (
+                        <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>비밀번호 확인</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="비밀번호를 입력하세요."
+                                            autoFocus
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="primary" onClick={deleteUser}>
+                                    확인
+                                </Button>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    취소
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    )}
+
+                    <br />
+                    <br />
+                       
+                    <Link to={`/cart`} className="btn btn-secondary" role="button">장바구니 &raquo;</Link> 
+                    &nbsp;
+
+                    <Link to={`/purchase`} className="btn btn-primary" role="button">구매목록 &raquo;</Link> 
+                </div>
+                </div>
+                </div>
             </body>
         </html>
 

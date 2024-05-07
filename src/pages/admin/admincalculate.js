@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
+import style from '../cart/style.css';
 
 function Admincalculate() {
     const [purchases, setPurchases] =useState([]);
@@ -29,36 +30,39 @@ function Admincalculate() {
                 <div className="jumbotron"> 
                     <div className="container">
                         <h1 className="display-3" align="center">정산 메뉴</h1>
-                        <h5 className="display-5" align="center">Calculate Menu</h5>
+                        <h5 className="display-5" align="center">Admin Calculate Menu</h5>
                     </div>
                 </div>
 
                 <div className="container">
-                    {purchases && purchases.map((purchase) => (
-                    <div key={purchase.id}>
-                        <table className="table table-hover">
+                    <table className="table table-hover">
+                        <thead>
                             <tr>
                                 <th>고객 ID</th>
                                 <th>도서 이름</th>
                                 <th>도서 수량</th>
                                 <th>도서 가격</th>
-                            </tr>
-                            <tr>
+                            </tr>                            
+                        </thead>
+                        <tbody>
+                            {purchases && purchases.map((purchase) => (
+                            <tr key={purchase.id}>
                                 <td>{purchase.username}</td>
                                 <td>{purchase.bookname}</td>
                                 <td>{purchase.quantity}</td>
                                 <td>₩{purchase.price}</td>
-                            </tr>
-                        </table>
-                    </div>                        
-                    ))}
-                    <div className="container">
-                        <tr>
-                            <th>총 가격 &nbsp;&nbsp;</th>
-                            <td>₩ {totalprice}</td>
-                        </tr>    
-                    </div>    
+                            </tr> 
+                            ))}                           
+                        </tbody>
+                    </table>    
                 </div>
+                <hr />
+                    <div className="container" align="center">
+                        <div className="text-center">
+                                <strong>총 가격 &nbsp;&nbsp;</strong>
+                                ₩{totalprice}                           
+                        </div>
+                    </div>    
             </body>
         </html>
     )

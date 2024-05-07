@@ -10,7 +10,7 @@ import Footer from './layouts/footer.js';
 import Books from './pages/book/books.js';
 import Book from './pages/book/book.js';
 import LogIn from './pages/user/login.js';
-import AddBook from './pages/book/addBook.js';
+import AddBook from './pages/admin/addBook.js';
 import Join from './pages/user/join.js';
 import Update from './pages/book/update.js';
 import Mypage from './pages/user/mypage.js';
@@ -25,9 +25,12 @@ import Adminbook from './pages/admin/adminbook.js';
 import Adminbooks from './pages/admin/adminbooks.js';
 import Adminstock from './pages/admin/adminstock.js';
 import Admincalculate from './pages/admin/admincalculate.js';
+import Adminsearchbooks from './pages/admin/adminsearchbooks.js';
 import { AuthProvider } from './pages/user/authcontext.js';
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from 'react';
+import axios from "axios";
 
 function MenubarSelector() {
   let location = useLocation(); // 현재 URL 경로를 가져옵니다.
@@ -41,6 +44,17 @@ function MenubarSelector() {
 }
 
 function App() {
+
+  useEffect(() => {
+    // 서버에서 렌더링된 HTML 문서에서 CSRF 토큰을 가져오는 로직
+    const csrfTokenMeta = document.querySelector("meta[name='_csrf']");
+
+    // CSRF 토큰이 존재하는지 확인 후 요청 헤더에 추가
+    if (csrfTokenMeta) {
+        const csrfToken = csrfTokenMeta.content;
+        axios.defaults.headers.common["X-XSRF-TOKEN"] = csrfToken;
+    }
+  }, []);
 
   return (
     <AuthProvider>
@@ -66,6 +80,7 @@ function App() {
           <Route path="/admin/adminbook/:id" element={<Adminbook />} />
           <Route path="/admin/adminstock" element={<Adminstock />} />
           <Route path="/admin/admincalculate" element={<Admincalculate />} />
+          <Route path="/admin/adminsearch/:bookname" element={<Adminsearchbooks />} />
         </Routes>
         
         <Footer />

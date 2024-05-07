@@ -82,7 +82,6 @@ function Join() {
                         <h3 className="form-signin-heading">Please Create Your Accout</h3>
                     </div>
                     <form onSubmit={saveUser} className="form-horizontal">
-                        {/* 폼 입력 요소들 */}
                         <div className="form-group row">
                             UserName <input name="username" value={user.username} className="form-control" onChange={onChange} placeholder="User Name" />
                         </div>
@@ -123,7 +122,7 @@ function Join() {
                             {errors.address}
                         </div>
                     )}
-                        {/* 폼 하단 버튼 */}
+
                         <div className="form-group row">
                             <button className="btn btn-lg btn-success btn-block" type="submit">회원가입</button>                
                         </div>

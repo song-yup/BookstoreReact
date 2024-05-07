@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate,useParams,BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
-function Searchbooks() {
+function Adminsearchbooks() {
     const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const { bookname }= useParams();
@@ -14,7 +14,7 @@ function Searchbooks() {
         .then(response => {
             if(response.data.length ===  0) {
                 alert("검색 결과가 없습니다.");
-                navigate("/books");
+                navigate("/admin/adminbooks");
             }
             else {
                 console.log("받아오는 값:",response.data,"검색어:", bookname)
@@ -33,8 +33,8 @@ function Searchbooks() {
             <body>
                 <div className="jumbotron"> 
                     <div className="container">
-                        <h1 className="display-3" align="center">검색 도서 목록</h1>
-                        <h5 className="display-5" align="center">Search Book List</h5>
+                        <h1 className="display-3" align="center">관리자 검색 도서 목록</h1>
+                        <h5 className="display-5" align="center">Admin Search Book List</h5>
                     </div>
                 </div> 
 
@@ -76,4 +76,4 @@ function Searchbooks() {
     )
 }
 
-export default Searchbooks;
+export default Adminsearchbooks;

@@ -1,0 +1,11 @@
+.table th, .table td {
+    min-width: 100px; /* 모든 열에 최소 너비를 설정 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
+}
+.table img {
+    width: 100px; /* 이미지 너비를 설정 */
+    height: auto; /* 이미지 높이를 자동 조정 */
+}
+.margin-class {
+    margin-left: 10px;
+}

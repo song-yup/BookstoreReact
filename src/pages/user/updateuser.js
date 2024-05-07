@@ -4,14 +4,14 @@ import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "re
 import axios from 'axios';
 
 function UpdateUser() {
-    const navigate = useNavigate(); // useNavigate 훅 사용
-    const [user, setUser] = useState(); // 초기값을 빈 배열 대신 null로 설정
+    const navigate = useNavigate();
+    const [user, setUser] = useState();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const response = await fetch(`/api/mypage`, {
-                    method: 'GET', // 메소드 명시
+                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/json', // 요청 헤더에 Content-Type 명시
                         // 필요하다면 인증 토큰 등을 여기에 추가
@@ -55,6 +55,10 @@ function UpdateUser() {
         });
       };
 
+      const canceledit = () => {
+        navigate("/mypage");
+    }
+
       return (
         <html>
             <head>
@@ -72,15 +76,20 @@ function UpdateUser() {
                 <div className="container col-md-4">
                     <form onSubmit={editUser} className="form-horizontal">
                         <div className="text-center">
-                            <h3 className="form-signin-heading">Update My Account</h3>
+                            <h2 className="form-signin-heading">Update My Account</h2>
                         </div>
+                        <hr />
 
-                        <div className="form-group row">
-                            <label className="col-sm-2 control-label">
-                                User ID
-                            </label>
-                            <div className="col-sm-6">
-                                <span className="badge badge-info">{user.username}</span>
+                        <div className="container col-md-8">
+                            <div className="text-center">
+                                <h3>
+                                    <label className="col-sm-6 control-label">
+                                        User ID
+                                    </label>   
+                                </h3>
+                                <label className="col-sm-6 control-label">
+                                    <h4> <span className="badge badge-info">{user.username}</span> </h4>
+                                </label>
                             </div>
                         </div>
 
@@ -121,11 +130,17 @@ function UpdateUser() {
                         </div>  
 
                         <div className="form-group row">
-                            <div className="col-sm-offset-2 col-sm-10">
-                                <button type="submit" className="btn btn-primary">수정</button>
+                            <div className="col-sm-10">
+                                <button type="submit" className="btn btn-lg btn-success btn-block">수정</button>
                             </div>
                         </div>
                     </form>
+                    <div className="form-group row">
+                        <div className="col-sm-10">
+                            <button className="btn btn-lg btn-secondary btn-block" onClick={() => canceledit()}>취소</button>
+                        </div>                        
+                    </div>
+
                 </div>          
             </body>
         </html>

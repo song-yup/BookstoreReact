@@ -1,39 +1,42 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Nav } from "react-bootstrap";
-import { useNavigate, BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Dropdown from 'react-bootstrap/Dropdown';
+import { Navbar, Nav, Dropdown, Container } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from '../pages/user/authcontext';
 
+const Clientmenubar = () => {
+    const { isLoggedIn, logout } = useAuth();
 
-const Clientmenubar = () => {  
-    const { isLoggedIn, logout } = useAuth();  
-    
     return (
-            <header>
-                <Nav className='navbar navbar-expand navbar-dark bg-dark'>
-                    <div className='container'>
-                        <div className='navbar-header'>
-                            <Link to="/books"><a className="navbar-brand" style={{ color: 'white' }}>SBS Book Market</a></Link>
-                        </div>
-                    <div>
-                        <ul className="navbar-nav mr-auto">
-                            {/* <li><Link to="/login" className="nav-link" role="button">로그인</Link></li> */}
+        <header>
+            <Navbar bg="dark" variant="dark" expand="lg">
+                <Container>
+                    <Navbar.Brand as={Link} to="/books">SBS Book Market</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
                             {
                                 isLoggedIn ? (
-                                <li><button className='btn btn-danger' onClick={logout}>로그아웃</button></li>
+                                    <Nav.Link as="button" className='btn btn-danger' onClick={logout} >로그아웃</Nav.Link>
                                 ) : (
-                                    <Link to="/login" className="nav-link" role="button">로그인</Link>
+                                    <Nav.Link as={Link} to="/login">로그인</Nav.Link>
+                                )
+                            }
+                            {/* <Nav.Link as={Link} to='/mypage'>마이 메뉴</Nav.Link> */}
+
+                            {
+                                isLoggedIn ? (
+                                    <Nav.Link as={Link} to="/mypage" >마이 메뉴</Nav.Link>
+                                ) : (
+                                    <Nav.Link as={Link} to="/join">회원 가입</Nav.Link>
                                 )
                             }
 
-                            <li><Link to='/mypage' className='nav-link' role='button'>마이 메뉴</Link></li>
-                                                                
-                            <li><Link to="/books/new" className="nav-link" role="button">신간도서</Link></li>
-
-                            <li><Link to="/books/ranking" className="nav-link" role="button">인기 도서 랭킹</Link></li>
+                            
+                            <Nav.Link as={Link} to="/books/new">신간도서</Nav.Link>
+                            <Nav.Link as={Link} to="/books/ranking">인기 도서 랭킹</Nav.Link>
 
                             <Dropdown>
-                                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="white-text">
                                     카테고리
                                 </Dropdown.Toggle>
 
@@ -41,14 +44,23 @@ const Clientmenubar = () => {
                                     <Dropdown.Item as={Link} to={`/외국어/books`}>외국어</Dropdown.Item>
                                     <Dropdown.Item as={Link} to={`/소설/books`}>소설</Dropdown.Item>
                                     <Dropdown.Item as={Link} to={`/시_에세이/books`}>시_에세이</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/경제_경영/books`}>경제_경영</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/유아(0~7세)/books`}>유아(0~7세)</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/어린이(초등)/books`}>어린이(초등)</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/인문/books`}>인문</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/자기계발/books`}>자기계발</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/역사_문화/books`}>역사_문화</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/가정_육아/books`}>가정_육아</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/건강/books`}>건강</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to={`/정치_사회/books`}>정치_사회</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
-                                                            
-                        </ul>
-                    </div>
-                    </div>
-                </Nav>
-            </header>
+
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </header>
     );
 }
 
