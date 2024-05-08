@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -23,7 +22,6 @@ export const AuthProvider = ({ children }) => {
         await axios.post(`/logout`);
         setIsLoggedIn(false);
         localStorage.removeItem('isLoggedIn'); // 로그아웃 시 localStorage에서 로그인 상태 제거
-        // navigate("/login"); // 로그아웃 후 로그인 페이지로 이동하길 원한다면 주석 해제
     } catch (error) {
         console.error("로그아웃에 실패했습니다:", error);
         alert('로그아웃에 실패했습니다.');

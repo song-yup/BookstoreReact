@@ -5,6 +5,12 @@ import { useAuth } from '../pages/user/authcontext';
 
 const Clientmenubar = () => {
     const { isLoggedIn, logout } = useAuth();
+    const navigate = useNavigate(); // useNavigate 사용하여 navigate 함수 생성
+
+    const handleLogout = () => {
+        logout(); // 로그아웃 함수 호출
+        navigate("/login"); // 로그아웃 후 로그인 페이지로 이동
+    }
 
     return (
         <header>
@@ -16,7 +22,7 @@ const Clientmenubar = () => {
                         <Nav className="me-auto">
                             {
                                 isLoggedIn ? (
-                                    <Nav.Link as="button" className='btn btn-danger' onClick={logout} >로그아웃</Nav.Link>
+                                    <Nav.Link as="button" className='btn btn-danger' onClick={handleLogout}>로그아웃</Nav.Link>
                                 ) : (
                                     <Nav.Link as={Link} to="/login">로그인</Nav.Link>
                                 )

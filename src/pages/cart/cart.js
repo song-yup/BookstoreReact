@@ -10,8 +10,7 @@ function Cart() {
     const [selectedBooks, setSelectedBooks] = useState([]);
     
     const carturl = `/api/cart`;
-    const alldeletecarturl = `/api/books/all/cart`;
-    
+
     useEffect(() => {
         axios.get(`${carturl}`)
         .then(response => setCart(response.data))
@@ -44,12 +43,14 @@ function Cart() {
                 ));
                 
                 // 선택된 cartId를 이용하여 장바구니에서 항목 제거
-                await Promise.all(selectedBooks.map(({ cartId }) => 
+                await Promise.all(selectedBooks.map(({cartId}) => 
                     deleteOneCart(cartId)
                 ));
-    
+
+                
                 setSelectedBooks([]); // 구매 후 선택 초기화
-                alert('선택한 책을 모두 구매했습니다.');
+                window.location.reload();
+                alert('선택한 책을 모두 구매했습니다.');                
             } catch (error) {
                 alert('책 구매를 실패하였습니다.');
             }
@@ -64,7 +65,7 @@ function Cart() {
 
         if (isConfirmed) {
             try {
-                await axios.delete(`${alldeletecarturl}`);
+                await axios.delete(`/api/books/all/cart`);
                 alert('장바구니에 있는 모든 책들이 삭제되었습니다.');
             } catch (error) {
                 alert('장바구니에 있는 모든 책들을 삭제하는데 실패했습니다.');
@@ -79,8 +80,8 @@ function Cart() {
 
         try {
             await axios.delete(`/api/books/${id}/cart`);
-            setCart(cart.filter(cart => cart.bookId !== id));
-            window.location.reload();
+            setCart(cart.filter(cart => cart.id !== id));
+            // window.location.reload();
         }
         catch (error) {
             alert('해당 책을 장바구니에서 삭제할 수 없습니다.');
@@ -158,7 +159,7 @@ function Cart() {
                                 <td>{cart.publisher}</td>
                                 <td>₩{cart.price * cart.quantity}</td>
                                 <td><button className="btn btn-success" onClick={() => purchase(cart.bookId, cart.quantity)}>구매</button></td>
-                                <td><button className="btn btn-danger" onClick={() => deleteOneCart(cart.bookId)}>삭제</button></td>
+                                <td><button className="btn btn-danger" onClick={() => deleteOneCart(cart.id)}>삭제</button></td>
                             </tr>
                         </table>
                     </div>                        

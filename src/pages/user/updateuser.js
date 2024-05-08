@@ -5,7 +5,20 @@ import axios from 'axios';
 
 function UpdateUser() {
     const navigate = useNavigate();
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({
+        username: "",
+        password: "",
+        email: "",
+        phoneNum: "",
+        address: ""
+    });
+    const [errors, setErrors] = useState({
+        username: "",
+        password: "",
+        email: "",
+        phoneNum: "",
+        address: ""
+    })
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -42,6 +55,10 @@ function UpdateUser() {
           ...user,
           [name]: value,
         });
+        setErrors({
+            ...errors,
+            [name]: "",
+        });
       };
 
       const editUser = async (e) => {
@@ -51,9 +68,27 @@ function UpdateUser() {
             navigate("/mypage")
         }).catch((error) => {
             console.error("수정에 실패했습니다:", error);
-            alert('수정에 실패했습니다');
+            if (error.response && error.response.data) {
+                const errorData = error.response.data;
+                // 서버로부터 받은 오류 메시지를 해당 필드에 맞게 설정
+                setErrors({
+                    username: errorData.username || "",
+                    password: errorData.password || "",
+                    email: errorData.email || "",
+                    phoneNum: errorData.phoneNum || "",
+                    address: errorData.address || ""
+                });
+            } else {
+                setErrors({
+                    username: "아이디가 이미 존재합니다.",
+                    password: "",
+                    email: "",
+                    phoneNum: "",
+                    address: ""
+                });
+            }
         });
-      };
+    };
 
       const canceledit = () => {
         navigate("/mypage");
@@ -82,63 +117,58 @@ function UpdateUser() {
 
                         <div className="container col-md-8">
                             <div className="text-center">
-                                <h3>
-                                    <label className="col-sm-6 control-label">
-                                        User ID
-                                    </label>   
-                                </h3>
                                 <label className="col-sm-6 control-label">
-                                    <h4> <span className="badge badge-info">{user.username}</span> </h4>
+                                    <h3> <span className="badge badge-info">{user.username}</span> </h3>
                                 </label>
                             </div>
                         </div>
 
                         <div className="form-group row">
-                            <label className="col-sm-2 control-label">
-                                전화번호
-                            </label>
-                            <div className="col-sm-6">
+                            전화번호
                                 <input name="phoneNum" value={user.phoneNum} onChange={onChange} className="form-control" />
-                            </div>                            
+                            {errors.phoneNum && (
+                                <div className="alert alert-danger" role="alert">
+                                    {errors.phoneNum}
+                                </div>
+                            )}                        
                         </div>
 
                         <div className="form-group row">
-                            <label className="col-sm-2 control-label">
-                                e-mail
-                            </label>
-                            <div className="col-sm-6">
+                            e-mail
                                 <input name="email" value={user.email} onChange={onChange} className="form-control" />
-                            </div>                            
+                            {errors.email && (
+                                <div className="alert alert-danger" role="alert">
+                                    {errors.email}
+                                </div>
+                            )}                                 
                         </div>
 
                         <div className="form-group row">
-                            <label className="col-sm-2 control-label">
-                                주소
-                            </label>
-                            <div className="col-sm-6">
+                            주소
                                 <input name="address" value={user.address} onChange={onChange} className="form-control" />
-                            </div>                            
+                            {errors.address && (
+                                <div className="alert alert-danger" role="alert">
+                                    {errors.address}
+                                </div>
+                            )}                          
                         </div>  
 
                         <div className="form-group row">
-                            <label className="col-sm-2 control-label">
-                                비밀번호
-                            </label>
-                            <div className="col-sm-6">
+                            비밀번호
                                 <input type="password" name="password" onChange={onChange} className="form-control" />
-                            </div>                            
+                            {errors.password && (
+                                <div className="alert alert-danger" role="alert">
+                                    {errors.password}
+                                </div>
+                            )}                           
                         </div>  
 
                         <div className="form-group row">
-                            <div className="col-sm-10">
                                 <button type="submit" className="btn btn-lg btn-success btn-block">수정</button>
-                            </div>
                         </div>
                     </form>
                     <div className="form-group row">
-                        <div className="col-sm-10">
                             <button className="btn btn-lg btn-secondary btn-block" onClick={() => canceledit()}>취소</button>
-                        </div>                        
                     </div>
 
                 </div>          

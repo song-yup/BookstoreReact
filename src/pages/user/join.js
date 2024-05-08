@@ -79,8 +79,10 @@ function Join() {
 
                 <div className="container col-md-4">
                     <div className="text-center">
-                        <h3 className="form-signin-heading">Please Create Your Accout</h3>
+                        <h2 className="form-signin-heading">Please Create Your Accout</h2>
                     </div>
+                    <hr />
+                    
                     <form onSubmit={saveUser} className="form-horizontal">
                         <div className="form-group row">
                             UserName <input name="username" value={user.username} className="form-control" onChange={onChange} placeholder="User Name" />
@@ -89,7 +91,8 @@ function Join() {
                         <div className="alert alert-danger" role="alert">
                             {errors.username}
                         </div>
-                    )}
+                        )}
+                        
                         <div className="form-group row">
                             비밀번호 <input type="password" name="password" value={user.password} className="form-control" onChange={onChange} placeholder="Password" />
                         </div>
@@ -97,7 +100,8 @@ function Join() {
                         <div className="alert alert-danger" role="alert">
                             {errors.password}
                         </div>
-                    )}
+                        )}
+                        
                         <div className="form-group row">
                             이메일 <input name="email" value={user.email} className="form-control" onChange={onChange} placeholder="E-Mail" />
                         </div>
@@ -105,7 +109,8 @@ function Join() {
                         <div className="alert alert-danger" role="alert">
                             {errors.email}
                         </div>
-                    )}
+                        )}
+                        
                         <div className="form-group row">
                             전화번호 <input name="phoneNum" value={user.phoneNum} className="form-control" onChange={onChange} placeholder="Phone Num" />
                         </div>
@@ -113,7 +118,8 @@ function Join() {
                         <div className="alert alert-danger" role="alert">
                             {errors.phoneNum}
                         </div>
-                    )}
+                        )}
+                        
                         <div className="form-group row">
                             주소 <input name="address" value={user.address} className="form-control" onChange={onChange} placeholder="Address" />
                         </div>
@@ -121,7 +127,7 @@ function Join() {
                         <div className="alert alert-danger" role="alert">
                             {errors.address}
                         </div>
-                    )}
+                        )}
 
                         <div className="form-group row">
                             <button className="btn btn-lg btn-success btn-block" type="submit">회원가입</button>                
