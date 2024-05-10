@@ -76,12 +76,10 @@ function Cart() {
         }
     }
 
-    const deleteOneCart = async (id) => {
-
+    const deleteOneCart = async (cartId) => {
         try {
-            await axios.delete(`/api/books/${id}/cart`);
-            setCart(cart.filter(cart => cart.id !== id));
-            // window.location.reload();
+            await axios.delete(`/api/books/${cartId}/cart`);
+            setCart(cart.filter(cartItem => cartItem.id !== cartId));
         }
         catch (error) {
             alert('해당 책을 장바구니에서 삭제할 수 없습니다.');
@@ -89,17 +87,18 @@ function Cart() {
         
     }
 
-    const purchase = async (id, quantity) => {
+    const purchase = async (cartId, bookId, quantity) => {
         const isConfirmed = window.confirm("장바구니의 해당 상품을 구매 하시겠습니까?");
 
         if(isConfirmed) {
             try {
-                await axios.post(`/api/books/${id}/purchase`, {
-                    "quantity":quantity,
-                    "bookId":id
+                await axios.post(`/api/books/${bookId}/purchase`, {
+                    "cartId":cartId,
+                    "bookId":bookId,
+                    "quantity":quantity
                 });
                 alert('해당 책을 구매하였습니다.');
-                await deleteOneCart(id);
+                await deleteOneCart(cartId);
             }
             catch (error) {
                 alert('해당 책 구매를 실패하였습니다.');
@@ -158,7 +157,7 @@ function Cart() {
                                 <td>{cart.author}</td>
                                 <td>{cart.publisher}</td>
                                 <td>₩{cart.price * cart.quantity}</td>
-                                <td><button className="btn btn-success" onClick={() => purchase(cart.bookId, cart.quantity)}>구매</button></td>
+                                <td><button className="btn btn-success" onClick={() => purchase(cart.id, cart.bookId, cart.quantity)}>구매</button></td>
                                 <td><button className="btn btn-danger" onClick={() => deleteOneCart(cart.id)}>삭제</button></td>
                             </tr>
                         </table>

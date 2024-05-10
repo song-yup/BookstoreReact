@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import DaumPostcode from "react-daum-postcode"; // Daum 주소 검색 컴포넌트를 import
+import './post.css';
 
 function Join() {
     const navigate = useNavigate();
@@ -20,24 +22,57 @@ function Join() {
         address: ""
     });
 
+    const [detailAddress, setDetailAddress] = useState("");
+
+    const [showPost, setShowPost] = useState(false); // 주소 검색 모달을 보여줄 상태
+
     const url="/api/joinProc";
 
     const onChange = (event) => {
         const { value, name } = event.target;
+        if (name === "detailAddress") { // 상세 주소 처리
+            setDetailAddress(value);
+        } else {
+            setUser({
+                ...user,
+                [name]: value,
+            });
+            setErrors({
+                ...errors,
+                [name]: "",
+            });
+        }
+    };
+
+    const completeAddress = (data) => {
+        let fullAddress = data.address;
+        let extraAddress = '';
+
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+            }
+            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+        }
+
         setUser({
             ...user,
-            [name]: value,
+            address: fullAddress,
         });
-        // 입력이 변경될 때 해당 필드의 오류를 초기화
-        setErrors({
-            ...errors,
-            [name]: "",
-        });
+
+        setShowPost(false); // 주소를 선택한 후에는 모달을 숨김
     };
 
     const saveUser = async (e) => {
         e.preventDefault();
-        await axios.post(`${url}`, user).then((res) => {
+        const finalUser = {
+            ...user,
+            address: `${user.address}, ${detailAddress}`.trim(),
+        };
+        await axios.post(`${url}`, finalUser).then((res) => {
             alert('회원 가입이 완료되었습니다.');
             navigate("/login")
         }).catch((error) => {
@@ -121,7 +156,18 @@ function Join() {
                         )}
                         
                         <div className="form-group row">
-                            주소 <input name="address" value={user.address} className="form-control" onChange={onChange} placeholder="Address" />
+                            {/* 주소 <input name="address" value={user.address} className="form-control" onChange={onChange} placeholder="Address" /> */}
+                            주소 <input name="address" value={user.address} className="form-control" readOnly onClick={() => setShowPost(true)} placeholder="Address" />
+                            {showPost && <div className="form-group row"><DaumPostcode onComplete={completeAddress} className="post-modal" /></div>}
+                        </div>
+                        {errors.address && (
+                        <div className="alert alert-danger" role="alert">
+                            {errors.address}
+                        </div>
+                        )}
+
+                        <div className="form-group row">
+                            상세 주소 <input name="detailAddress" value={detailAddress} className="form-control" onChange={onChange} placeholder="Detail Address" />
                         </div>
                         {errors.address && (
                         <div className="alert alert-danger" role="alert">
@@ -132,6 +178,7 @@ function Join() {
                         <div className="form-group row">
                             <button className="btn btn-lg btn-success btn-block" type="submit">회원가입</button>                
                         </div>
+                        
                     </form>                    
                 </div>
             </body>
