@@ -27,6 +27,9 @@ import Adminstock from './pages/admin/adminstock.js';
 import Admincalculate from './pages/admin/admincalculate.js';
 import Adminsearchbooks from './pages/admin/adminsearchbooks.js';
 import { AuthProvider } from './pages/user/authcontext.js';
+import Adminsearchstock from './pages/admin/adminsearchstock.js';
+import Purchasesuccess from './pages/order/purchasesuccess.js';
+import EBooks from './pages/book/ebook.js';
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from 'react';
@@ -35,8 +38,10 @@ import axios from "axios";
 function MenubarSelector() {
   let location = useLocation(); // 현재 URL 경로를 가져옵니다.
   
-  // 경로에 따라 다른 메뉴바를 보여줍니다.
-  if (location.pathname.startsWith('/admin')) {
+  // EBooks 페이지일 때 메뉴바를 표시하지 않습니다.
+  if (location.pathname.startsWith('/books/ebooks/')) {
+    return null; // 메뉴바가 필요 없으므로 null을 반환합니다.
+  } else if (location.pathname.startsWith('/admin')) {
     return <Adminmenubar />;
   } else {
     return <Clientmenubar />;
@@ -81,6 +86,9 @@ function App() {
           <Route path="/admin/adminstock" element={<Adminstock />} />
           <Route path="/admin/admincalculate" element={<Admincalculate />} />
           <Route path="/admin/adminsearch/:bookname" element={<Adminsearchbooks />} />
+          <Route path="/admin/adminsearchstock/:bookname" element={<Adminsearchstock />} />
+          <Route path="/purchase/success" element={<Purchasesuccess />} />
+          <Route path="/books/ebooks/:id/:page" element={<EBooks />} />
         </Routes>
         
         <Footer />

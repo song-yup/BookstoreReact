@@ -29,7 +29,7 @@ function Admincalculate() {
             <body>
                 <div className="jumbotron"> 
                     <div className="container">
-                        <h1 className="display-3" align="center">정산 메뉴</h1>
+                        <h1 className="display-3" align="center">관리자 정산 메뉴</h1>
                         <h5 className="display-5" align="center">Admin Calculate Menu</h5>
                     </div>
                 </div>

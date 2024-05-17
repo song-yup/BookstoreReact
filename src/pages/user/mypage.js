@@ -130,19 +130,19 @@ function Mypage() {
                         <h3 className="form-signin-heading">Check My Account</h3>
                     </div>
                     <div className="text-center mt-4">
-                        <p><strong>고객 ID</strong> : {user.username}</p>
+                        <p><strong>User ID</strong> : {user.username}</p>
                     </div>
 
                     <div className="text-center">
-                        <p><strong>전화 번호</strong> : {user.phoneNum}</p>
+                        <p><strong>Phone Num</strong> : {user.phoneNum}</p>
                     </div>
 
                     <div className="text-center">
-                        <p><strong>e-mail</strong> : {user.email}</p>
+                        <p><strong>E-Mail</strong> : {user.email}</p>
                     </div>
 
                     <div className="text-center mb-4">
-                        <p><strong>주소</strong> : {user.address}</p>
+                        <p><strong>Address</strong> : {user.address}</p>
                     </div>
 
 
@@ -156,11 +156,7 @@ function Mypage() {
                             ))}
                         </div>
                     </div>
-                    
-                    {/* <Link to={`/mypage/update`} className="btn btn-success" onClick={() => updateUser()} role="button">회원수정 &raquo;</Link>
-                    &nbsp;
-                    <Link to={`/mypage/delete`} className="btn btn-danger"  onClick={() => deleteUser()} role="button">회원탈퇴 &raquo;</Link> */}
-                    
+                
                     <br />
 
                     <div className="container">
@@ -237,7 +233,7 @@ function Mypage() {
                     <br />
                     <br />
                        
-                    <Link to={`/cart`} className="btn btn-secondary" role="button">장바구니 &raquo;</Link> 
+                    <Link to={`/cart`} className="btn btn-outline-primary" role="button">장바구니 &raquo;</Link> 
                     &nbsp;
 
                     <Link to={`/purchase`} className="btn btn-primary" role="button">구매목록 &raquo;</Link> 

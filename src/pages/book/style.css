@@ -1,0 +1,23 @@
+.arrow_after {
+    position: absolute;
+    left: 0; 
+    top: 0; 
+    content: '';
+    width: 50px; /* 사이즈 */
+    height: 50px; /* 사이즈 */
+    border-top: 5px solid #000; /* 선 두께 */
+    border-right: 5px solid #000; /* 선 두께 */
+    transform: rotate(45deg); /* 각도 */
+}
+
+.arrow_before {
+    position: absolute;
+    left: 0; 
+    top: 0; 
+    content: '';
+    width: 50px; /* 사이즈 */
+    height: 50px; /* 사이즈 */
+    border-top: 5px solid #000; /* 선 두께 */
+    border-right: 5px solid #000; /* 선 두께 */
+    transform: rotate(225deg); /* 각도 */
+}

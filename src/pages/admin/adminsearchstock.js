@@ -4,33 +4,16 @@ import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "re
 import axios from 'axios';
 import style from '../cart/style.css';
 
-function Adminstock() {
+function Adminsearchstock() {
     const navigate = useNavigate();
-    const [bookname, setBookname] = useState('');
+    const { bookname }= useParams();
     const [books, setBooks] =useState([]);
-    const stockurl = `/api/admin/stock`;
     
     useEffect(() => {
-        axios.get(`${stockurl}`)
+        axios.get(`/api/books/search/${bookname}`)
         .then(response => setBooks(response.data))
         .catch(error => console.log(error))
     }, []);
-
-    const booknamechage = (event) => {
-        setBookname(event.target.value);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if(bookname){
-            console.log("검색창1:",bookname);
-            navigate(`/admin/adminsearchstock/${bookname}`);
-        }
-        else if (bookname == "") {
-            alert("검색 결과가 없습니다.");
-            console.log("검색창2:",bookname);
-        }
-    };
 
     return (
         <html>
@@ -41,21 +24,10 @@ function Adminstock() {
             <body>
                 <div className="jumbotron"> 
                     <div className="container">
-                        <h1 className="display-3" align="center">관리자 재고 현황</h1>
-                        <h5 className="display-5" align="center">Admin Stock Information</h5>
+                        <h1 className="display-3" align="center">관리자 검색 재고 현황</h1>
+                        <h5 className="display-5" align="center">Admin Search Stock Information</h5>
                     </div>
                 </div>
-
-                <form className="d-flex justify-content-center" onSubmit={handleSubmit} style={{borderBottom: '1px solid #dee2e6', paddingBottom: '1rem'}}>
-                    <div className="row flex-nowrap">
-                        <div className="col">
-                            <input name="bookname" value={bookname} className="form-control" onChange={booknamechage} placeholder="Search" aria-label="Search" />
-                        </div>
-                        <div className="col-auto">
-                            <button className="btn btn-primary" type="submit">검색</button>
-                        </div>
-                    </div>
-                </form>
 
                 <div className="container">
                     <table className="table table-hover">
@@ -82,4 +54,4 @@ function Adminstock() {
     )
 }
 
-export default Adminstock;
+export default Adminsearchstock;

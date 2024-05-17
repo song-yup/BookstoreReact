@@ -8,7 +8,6 @@ function Adminsearchbooks() {
     const [books, setBooks] = useState([]);
     const { bookname }= useParams();
 
-
     useEffect(() => {
         axios.get(`/api/books/search/${bookname}`)
         .then(response => {

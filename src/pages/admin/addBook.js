@@ -51,8 +51,8 @@ function AddBook() {
             <body>
                 <div className="jumbotron"> 
                     <div className="container">
-                        <h1 className="display-3" align="center">도서 등록</h1>
-                        <h5 className="display-5" align="center">Book Addition</h5>
+                        <h1 className="display-3" align="center">관리자 도서 등록</h1>
+                        <h5 className="display-5" align="center">Admin Book Addition</h5>
                     </div>
                 </div>
                 

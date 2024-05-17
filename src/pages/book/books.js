@@ -3,8 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
-
-
 function Books() {
     const navigate = useNavigate();
     const [books, setBooks] = useState([]);

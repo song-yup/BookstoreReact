@@ -4,6 +4,9 @@ import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "re
 import axios from 'axios';
 import DaumPostcode from "react-daum-postcode"; // Daum 주소 검색 컴포넌트를 import
 import './post.css';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 function UpdateUser() {
     const navigate = useNavigate();
@@ -25,8 +28,7 @@ function UpdateUser() {
     });
 
     const [detailAddress, setDetailAddress] = useState("");
-
-    const [showPost, setShowPost] = useState(false);
+    const [showModal, setShowModal] = useState(false); // 모달 표시 상태
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -34,16 +36,17 @@ function UpdateUser() {
                 const response = await fetch(`/api/mypage`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json', // 요청 헤더에 Content-Type 명시
-                        // 필요하다면 인증 토큰 등을 여기에 추가
+                        'Content-Type': 'application/json',
                     },
                 });
                 if(response.ok) {
                     const data = await response.json();
-                    const addressParts = data.address.split(', '); // 콤마와 공백으로 주소를 나눕니다.
-                    if(addressParts.length > 1) {
-                        setDetailAddress(addressParts[1]); // 상세 주소 설정
-                        data.address = addressParts[0]; // 주소 설정
+                    // 마지막 ','의 위치 찾기
+                    const lastCommaIndex = data.address.lastIndexOf(', ');
+                    if(lastCommaIndex > -1) {
+                        // 마지막 ','를 기준으로 주소를 나누기
+                        setDetailAddress(data.address.substring(lastCommaIndex + 2)); // 상세 주소 설정
+                        data.address = data.address.substring(0, lastCommaIndex); // 주소 설정
                     }
                     setUser(data);
                 } else {
@@ -96,11 +99,11 @@ function UpdateUser() {
             ...user,
             address: fullAddress,
         });
-
-        setShowPost(false); // 주소를 선택한 후에는 모달을 숨김
+        setShowModal(false);
     };
 
-
+    const handleShow = () => setShowModal(true);
+    const handleClose = () => setShowModal(false);
 
     const editUser = async (e) => {
         e.preventDefault();
@@ -190,18 +193,30 @@ function UpdateUser() {
 
                         <div className="form-group row">
                             주소
-                                <input name="address" value={user.address} readOnly onClick={() => setShowPost(true)} className="form-control" />
-                                {showPost && <div className="form-group row"><DaumPostcode onComplete={completeAddress} className="post-modal" /></div>}
-                            {errors.address && (
-                                <div className="alert alert-danger" role="alert">
-                                    {errors.address}
-                                </div>
-                            )}                          
+                            <input name="address" value={user.address} className="form-control" readOnly placeholder="Address" />
+                            <div className="col-md-12" align="center"> <br />
+                                <Button variant="primary" onClick={handleShow}>
+                                    주소검색
+                                </Button>                                
+                            </div>
+                            <Modal show={showModal} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>주소 검색</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <DaumPostcode onComplete={completeAddress} />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleClose}>
+                                        취소
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
                         </div>
 
                         <div className="form-group row">
                             상세 주소
-                                <input name="address" value={detailAddress} onChange={onChange} className="form-control" />
+                                <input name="detailAddress" value={detailAddress} onChange={onChange} className="form-control" />
                             {errors.address && (
                                 <div className="alert alert-danger" role="alert">
                                     {errors.address}
@@ -211,7 +226,7 @@ function UpdateUser() {
 
                         <div className="form-group row">
                             새 비밀번호
-                                <input type="password" name="password" onChange={onChange} className="form-control" placeholder="New Password" />
+                                <input type="password" name="password" onChange={onChange} className="form-control" placeholder="New Password" required />
                             {errors.password && (
                                 <div className="alert alert-danger" role="alert">
                                     {errors.password}

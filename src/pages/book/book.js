@@ -14,7 +14,10 @@ function Book() {
     const [purchaseQuantity, setPurchaseQuantity] = useState(1);
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editingContent, setEditingContent] = useState("");
-    const [bookid, setBookid] = useState(1);
+    const [bookid, setBookid] = useState();
+    const [summary, setSummary] = useState('');
+    const [bookdetail, setBookdetail] = useState('');
+    const [page, setPage] = useState(0);
 
     const increaseQuantity = () => {
       setCartQuantity(prevQuantity => prevQuantity + 1);
@@ -36,6 +39,7 @@ function Book() {
         if(id) {
             const url = `/api/books/${id}`;
             const commenturl = `/api/books/${id}/comments`;
+            const bookdetailurl = `/api/${id}/detail`
 
             axios.get(`${url}`)
             .then(response => setBook(response.data))
@@ -44,6 +48,10 @@ function Book() {
             
             axios.get(`${commenturl}`)
             .then(response => setComment(response.data))
+            .catch(error => console.log(error));
+
+            axios.get(`${bookdetailurl}`)
+            .then(response => setBookdetail(response.data))
             .catch(error => console.log(error));
         }
     }, [id]);
@@ -54,48 +62,71 @@ function Book() {
 
     const cart = async () => {
         const isConfirmed = window.confirm("장바구니에 " + cartQuantity + "권을 추가하시겠습니까?");
-
+    
         if(isConfirmed) {
-           try {
-            await axios.post(`/api/books/${id}/cart`, {
-                "quantity": cartQuantity,
-                "bookId":id
-            });
-            alert("장바구니에 " + cartQuantity  + "권을 추가하였습니다.");
-            window.location.reload();
+            try {
+                await axios.post(`/api/books/${id}/cart`, {
+                    "quantity": cartQuantity,
+                    "bookId": id
+                });
+    
+                const isConfirmed2 = window.confirm("장바구니에 " + cartQuantity + "권을 추가하였습니다. 장바구니로 이동하시겠습니까?");
+                if(isConfirmed2) {
+                    navigate("/cart");
+                } else {
+                    window.location.reload();
+                }
             } catch (error) {
-                console.error(error)
+                console.error(error);
                 alert('장바구니 추가에 실패했습니다. 로그인이 필요한 서비스 입니다.');
                 navigate('/login');
-            } 
-        }
-        else {
+            }
+        } else {
             window.location.reload();
         }
     }
-
-
-    const purchase = async () => { 
+    
+    const purchase = async () => {
         const isConfirmed = window.confirm(purchaseQuantity + "권을 바로 구매하시겠습니까?");
-
-        if(isConfirmed) {
+    
+        if (isConfirmed) {
             try {
-                await axios.post(`/api/books/${id}/purchase`, {
-                    "quantity": purchaseQuantity,
-                    "bookId": id
+                // 선택된 책들에 대해 결제 준비 API 호출
+                const response = await axios.post(`/payment/ready`, {
+                    bookname: book.bookname,
+                    quantity: purchaseQuantity,
+                    price: book.price
                 });
-                alert(purchaseQuantity + "권을 구매하였습니다.");
-                window.location.reload();
+    
+                // 모바일과 PC 환경에 따라 결제 페이지 URL 선택
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                const paymentPageUrl = isMobile ? response.data.next_redirect_mobile_url : response.data.next_redirect_pc_url;
+    
+                // 결제 페이지로 리디렉션
+                window.location.href = paymentPageUrl;
+    
+                // 결제 성공 후 책 구매 API 호출
+                await axios.post(`/api/books/${id}/purchase`, {
+                    quantity: purchaseQuantity,
+                    bookId: id
+                });
+    
+                // 결제 완료 후 처리를 위해 필요한 정보를 로컬 저장소에 저장
+                localStorage.setItem('purchasedBooks', JSON.stringify({
+                    bookId: id, 
+                    quantity: purchaseQuantity, 
+                    bookname: book.bookname, 
+                    price: book.price
+                }));
+
             } catch (error) {
                 console.error(error);
                 alert('구매목록 추가에 실패했습니다. 로그인이 필요한 서비스 입니다.');
                 navigate('/login');
-            }  
-        }
-        else {
+            }
+        } else {
             window.location.reload();
         }
-        
     };
 
     const createcomment = async (event) => {
@@ -119,14 +150,14 @@ function Book() {
 
         if(isConfirmed) {
             try {
-            await axios.delete(`/api/comments/${id}`);
-            alert('댓글이 삭제되었습니다.');
-            window.location.reload();
-          } catch (error) {
-            console.error("삭제에 실패했습니다:", error);
-            alert('댓글 삭제에 실패했습니다.');
-            window.location.reload();
-          }
+                await axios.delete(`/api/comments/${id}`);
+                alert('댓글이 삭제되었습니다.');
+                window.location.reload();
+            } catch (error) {
+                console.error("삭제에 실패했습니다:", error);
+                alert('댓글 삭제에 실패했습니다.');
+                window.location.reload();
+            }
         }
         else {
             window.location.reload();
@@ -158,6 +189,36 @@ function Book() {
     const cancelComment = () => {
         setEditingContent(comment.content);
         window.location.reload();
+    };
+
+    function AISummary(commentsData) {
+        const response = fetch(`/api/summary`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(commentsData)
+        })
+        .then(response => response.json()) // 서버 응답을 JSON으로 변환
+        .then(data => {
+            setSummary(data.summary);
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    const showebook = () => {    
+        axios.get(`/api/ebook/${book.id}/${page}`)
+        .then(response => {
+            window.open(`/books/ebooks/${book.id}/${page}`, 'ebookPreview', 'width=1000,height=800,left=0,top=100');
+            console.log(response);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('해당 도서는 e-book 미리보기를 지원하지 않습니다.');
+        });
     }
     
     
@@ -191,10 +252,96 @@ function Book() {
                             <p><b>분류</b> : {book.category}</p>
                             <p><b>재고수</b> : {book.unitsinstock}</p>
                             <h4>₩{book.price}</h4>
-                            <p>{book.description}</p>
+                            <div>
+                                <div>
+                                    <button 
+                                        onClick={decreaseQuantity} 
+                                        className="btn btn-secondary" 
+                                        style={{margin: '0 10px'}}
+                                        disabled={cartQuantity === 1} // 1일 때 버튼 비활성화
+                                    >
+                                        -
+                                    </button>
+                                    <span>{cartQuantity}</span>
+                                    <button 
+                                        onClick={increaseQuantity} 
+                                        className="btn btn-secondary" 
+                                        style={{margin: '0 10px'}}
+                                    >
+                                        +
+                                    </button>
+                                    <button className="btn btn-success" onClick={cart}>장바구니에 추가 &raquo;</button>
+                                </div>
+                                
+                            </div>
+                            
+                            <br />
+                            
+                            <div>
+                                <div>
+                                    <button 
+                                        onClick={decreasePurchaseQuantity} 
+                                        className="btn btn-secondary" 
+                                        style={{margin: '0 10px'}}
+                                        disabled={purchaseQuantity === 1} // 1일 때 버튼 비활성화
+                                    >
+                                        -
+                                    </button>
+                                    <span>{purchaseQuantity}</span>
+                                    <button 
+                                        onClick={increasePurchaseQuantity} 
+                                        className="btn btn-secondary" 
+                                        style={{margin: '0 10px'}}
+                                    >
+                                        +
+                                    </button>
+                                    <button className="btn btn-danger" onClick={purchase}>바로 구매하기 &raquo;</button>
+                                </div>
+
+                                <br />
+                                <button className="btn btn-primary" onClick={showebook}>E-Book 미리보기</button>
+
+                            </div>
+
                         </div>
 
                         <div className="col-md-10">
+                        <br />
+
+                        <div className="container" align="center">
+                            <img src={bookdetail.detailUrl} style={{ width: '800px', maxWidth: '100%'}}></img>
+                        </div>        
+
+                        <br />
+                        <br />               
+
+                        <div className="col-md-10">
+                            {book.description}
+                        </div>
+
+                        <br />
+                        <br />
+                     
+                        <form className="form-horizontal" onSubmit={(e) => {
+                                e.preventDefault();
+                                if(comment.length > 0) {
+                                    const commentsData = comment.map(c => ({
+                                        id: c.id,
+                                        bookId: book.id,
+                                        username: c.username,
+                                        content: c.content,
+                                        bookName: book.bookname
+                                    }));
+                                    AISummary(commentsData);
+                                }
+                            }}>
+                                <strong>모든 댓글 AI 요약</strong>
+                                <textarea name="summary" className="form-control" style={{width: '100%', height: '100px'}} value={summary} placeholder="AI Comment Summary" readOnly/> 
+                                <br />
+                                <button className="btn btn-primary">요약하기</button>
+                            </form>
+
+                            <br />
 
                             <b>댓글</b>
                             
@@ -218,8 +365,6 @@ function Book() {
                                                         <button className="btn btn-secondary" onClick={cancelComment}>취소</button>
                                                     </div>
                                                 </div>
-
-                                                {/* <button className="btn btn-success" onClick={() => saveComment(comment.id)}>저장</button> */}
                                             </>
                                         ) : (
                                             <>
@@ -243,7 +388,6 @@ function Book() {
 
                             <br />
 
-                            <b>댓글 작성</b>
                             <form onSubmit={createcomment} className="form-horizontal">
                                 <div className="d-flex">
                                     <div className="col-sm-5">
@@ -254,66 +398,6 @@ function Book() {
                                     </div>
                                 </div>                                         
                             </form>
-
-                            <br />
-                            <br />
-                            <br />
-
-                            <div>
-                                <label htmlFor="cartQuantity">장바구니 수량 선택 : </label>
-                                <div>
-                                    <button 
-                                        onClick={decreaseQuantity} 
-                                        className="btn btn-secondary" 
-                                        style={{margin: '0 10px'}}
-                                        disabled={cartQuantity === 1} // 1일 때 버튼 비활성화
-                                    >
-                                        -
-                                    </button>
-                                    <span>{cartQuantity}</span>
-                                    <button 
-                                        onClick={increaseQuantity} 
-                                        className="btn btn-secondary" 
-                                        style={{margin: '0 10px'}}
-                                    >
-                                        +
-                                    </button>
-                                    <button className="btn btn-success" onClick={cart}>장바구니에 추가 &raquo;</button>
-                                </div>
-                                
-                            </div>
-
-                            <br />
-                            
-                            <div>
-                                <label htmlFor="purchaseQuantity">구매 수량 선택 : </label>
-                                <div>
-                                    <button 
-                                        onClick={decreasePurchaseQuantity} 
-                                        className="btn btn-secondary" 
-                                        style={{margin: '0 10px'}}
-                                        disabled={purchaseQuantity === 1} // 1일 때 버튼 비활성화
-                                    >
-                                        -
-                                    </button>
-                                    <span>{purchaseQuantity}</span>
-                                    <button 
-                                        onClick={increasePurchaseQuantity} 
-                                        className="btn btn-secondary" 
-                                        style={{margin: '0 10px'}}
-                                    >
-                                        +
-                                    </button>
-                                    <button className="btn btn-danger" onClick={purchase}>바로 구매하기 &raquo;</button>
-                                </div>
-                            </div>
-                            
-                            <br />
-                            <br />
-
-                            {/* <Link to={`/books`} className="btn btn-secondary">도서목록 &raquo;</Link>
-                            <Link to={`/cart`} className="btn btn-warning">장바구니 &raquo;</Link> */}
-
                         </div>
                     </div>
                 </div>

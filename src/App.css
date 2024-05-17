@@ -37,3 +37,16 @@
     transform: rotate(360deg);
   }
 }
+/* 모바일 환경에서 적용할 스타일 */
+.responsive-img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* PC 환경에서 적용할 스타일 */
+@media screen and (min-width: 768px) {
+  .responsive-img {
+      width: 900px;
+      height: auto;
+  }
+}

@@ -56,37 +56,23 @@ function Purchase() {
                         <br />
                     </div>
 
-                    <div className="container">
+                    {purchase && purchase.map((purchase) => (
+                    <div key={purchase.id} className="table-container">
                         <table className="table table-hover">
-                            <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
                                 <tr>
-                                    <th>도서이미지</th>
-                                    <th>도서이름</th>
-                                    <th>가격</th>
-                                    <th>수량</th>
-                                    <th>작가</th>
-                                    <th>출판사</th>
-                                    <th>총 가격</th>
-                                    <th>환불</th>
+                                    <td><img src={purchase.imageUrl} style={{width:'100px',height:'175px'}} alt="이미지 없음" /><br/><strong>{purchase.bookname}</strong></td>
+                                    <td>{purchase.price}원<br/><br/><hr />{purchase.quantity}권 <br/><br/> <hr /> ₩{purchase.price * purchase.quantity}</td>
+                                    <td><br/><br/><br/><button className="btn btn-danger" onClick={() => refundbook(purchase.id)}>환불&raquo;</button></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {purchase && purchase.map((purchase) => (
-                                <tr key={purchase.id}>
-                                    <td><img src={purchase.imageUrl} style={{width:'50%'}} alt="이미지 없음"></img></td>
-                                    <td>{purchase.bookname}</td>
-                                    <td>₩{purchase.price}</td>
-                                    <td>{purchase.quantity}</td>
-                                    <td>{purchase.author}</td>
-                                    <td>{purchase.publisher}</td>
-                                    <td>₩{purchase.price * purchase.quantity}</td>
-                                    <td><button className="btn btn-danger" onClick={() => refundbook(purchase.id)}>환불&raquo;</button></td>
-                                </tr>
-                                ))}   
-                            </tbody>
+                          
                         </table>
                     </div>
-
+                ))}   
                 </div>
             </body>
         </html>
