@@ -92,15 +92,18 @@ function Purchasesuccess () {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>{purchasedBooks.bookname}</td>
-                                        <td>{purchasedBooks.quantity} 권</td>
-                                        <td>{purchasedBooks.price} 원</td>
-                                    </tr>
+                                    {purchasedBooks.map((book, index) => (
+                                        <tr key={index}>
+                                            <td>{book.bookname}</td>
+                                            <td>{book.quantity} 권</td>
+                                            <td>{book.price} 원</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
                     )}
+
                 </div>
             </body>
         </div>

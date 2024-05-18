@@ -91,32 +91,27 @@ function Book() {
     
         if (isConfirmed) {
             try {
-                // 선택된 책들에 대해 결제 준비 API 호출
                 const response = await axios.post(`/payment/ready`, {
-                    bookname: book.bookname,
-                    quantity: purchaseQuantity,
-                    price: book.price
+                    "bookname": book.bookname,
+                    "quantity": purchaseQuantity,
+                    "price": book.price
                 });
-    
-                // 모바일과 PC 환경에 따라 결제 페이지 URL 선택
+                
                 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                 const paymentPageUrl = isMobile ? response.data.next_redirect_mobile_url : response.data.next_redirect_pc_url;
-    
-                // 결제 페이지로 리디렉션
+                
                 window.location.href = paymentPageUrl;
-    
-                // 결제 성공 후 책 구매 API 호출
-                await axios.post(`/api/books/${id}/purchase`, {
-                    quantity: purchaseQuantity,
-                    bookId: id
-                });
-    
-                // 결제 완료 후 처리를 위해 필요한 정보를 로컬 저장소에 저장
+
+                axios.post(`/api/books/${id}/purchase`, {
+                    "quantity": purchaseQuantity,
+                    "bookId": id
+                }); 
+                
                 localStorage.setItem('purchasedBooks', JSON.stringify({
-                    bookId: id, 
-                    quantity: purchaseQuantity, 
-                    bookname: book.bookname, 
-                    price: book.price
+                    "bookId": id, 
+                    "quantity": purchaseQuantity, 
+                    "bookname": book.bookname, 
+                    "price": book.price
                 }));
 
             } catch (error) {
@@ -124,7 +119,8 @@ function Book() {
                 alert('구매목록 추가에 실패했습니다. 로그인이 필요한 서비스 입니다.');
                 navigate('/login');
             }
-        } else {
+        } 
+        else {
             window.location.reload();
         }
     };
@@ -217,7 +213,7 @@ function Book() {
         })
         .catch((error) => {
             console.error('Error:', error);
-            alert('해당 도서는 e-book 미리보기를 지원하지 않습니다.');
+            alert('해당 도서는 E-Book 미리보기를 지원하지 않습니다.');
         });
     }
     
@@ -258,7 +254,7 @@ function Book() {
                                         onClick={decreaseQuantity} 
                                         className="btn btn-secondary" 
                                         style={{margin: '0 10px'}}
-                                        disabled={cartQuantity === 1} // 1일 때 버튼 비활성화
+                                        disabled={cartQuantity === 1}
                                     >
                                         -
                                     </button>
@@ -283,7 +279,7 @@ function Book() {
                                         onClick={decreasePurchaseQuantity} 
                                         className="btn btn-secondary" 
                                         style={{margin: '0 10px'}}
-                                        disabled={purchaseQuantity === 1} // 1일 때 버튼 비활성화
+                                        disabled={purchaseQuantity === 1}
                                     >
                                         -
                                     </button>

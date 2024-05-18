@@ -18,54 +18,49 @@ function Cart() {
     const handleSelectBook = (cartId, bookId, quantity, bookname, price, userId) => {
         const found = selectedBooks.find(item => item.cartId === cartId);
         if (found) {
-            // 이미 선택된 항목이면 제거
             setSelectedBooks(selectedBooks.filter(item => item.cartId !== cartId));
         } else {
-            // 새로 선택된 항목 추가
             setSelectedBooks([...selectedBooks, { cartId, bookId, quantity, bookname, price, userId }]);
         }
     }
 
     const purchaseSelectedBooks = async (event) => {
         event.preventDefault();
-
+    
         const isConfirmed = window.confirm("장바구니에서 선택된 상품을 구매 하시겠습니까?");
         
         if(isConfirmed) {
             try {
-                    const response = await Promise.all(selectedBooks.map(({ bookname, quantity, price}) =>
-                        axios.post(`/payment/ready`, {
-                            bookname,
-                            quantity,
-                            price
-                        })
-                    ));
-
-                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                    const paymentPageUrl = isMobile ? response[0].data.next_redirect_mobile_url : response[0].data.next_redirect_pc_url;
-
-                    window.location.href = paymentPageUrl;  
-
-                    await Promise.all(selectedBooks.map(({ cartId, bookId, quantity }) => 
-                        axios.post(`/api/books/${bookId}/purchase`, {
-                            cartId,
-                            quantity,
-                            bookId
-                        }))
-                    );
-
-                    // 결제 완료 후 처리를 위해 필요한 정보를 로컬 저장소에 저장
-                    localStorage.setItem('purchasedBooks', JSON.stringify(selectedBooks));
-                    
-                    await Promise.all(selectedBooks.map(({ cartId }) => 
-                        axios.delete(`/api/books/${cartId}/cart`,{
-                            cartId
-                        }))
-                    );
-
-                    setSelectedBooks([]);
-                    setCart([]);
-
+                // 결제 준비 요청
+                const paymentResponses = await Promise.all(selectedBooks.map(({ bookname, quantity, price}) =>
+                    axios.post(`/payment/ready`, {
+                        "bookname": bookname,
+                        "quantity": quantity,
+                        "price": price
+                    })
+                ));
+    
+                // 여기에 구매 처리 요청을 추가
+                await Promise.all(selectedBooks.map(({ cartId, bookId, quantity }) => 
+                    axios.post(`/api/books/${bookId}/${cartId}/purchase`, {
+                        "cartId": cartId,
+                        "bookId": bookId,
+                        "quantity": quantity
+                    })
+                ));
+    
+                // 결제 페이지 URL 결정
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                const paymentPageUrl = isMobile ? paymentResponses[0].data.next_redirect_mobile_url : paymentResponses[0].data.next_redirect_pc_url;
+                
+                // localStorage에 구매한 책 저장
+                localStorage.setItem('purchasedBooks', JSON.stringify(selectedBooks));
+                
+                // 선택된 책 목록 초기화
+                setSelectedBooks([]);
+    
+                // 결제 페이지로 리다이렉트
+                window.location.href = paymentPageUrl;
             } catch (error) {
                 alert('책 구매를 실패하였습니다.');
                 console.log(error);
@@ -74,20 +69,7 @@ function Cart() {
             window.location.reload();
         }
     }
-
-    // const purchase = async (cartId, bookId, quantity) => {
-    //     try {
-    //         await axios.post(`/api/books/${bookId}/purchase`, {
-    //             cartId,
-    //             bookId,
-    //             quantity
-    //         });
-    //         deleteOneCart(cartId);
-    //     }
-    //     catch (error) {
-    //         alert('해당 책 구매를 실패하였습니다.');
-    //     }            
-    // }    
+    
 
     const deleteAllCart = async () => {
         const isConfirmed = window.confirm("장바구니의 모든 상품을 삭제 하시겠습니까?");
@@ -109,7 +91,7 @@ function Cart() {
     const deleteOneCart = async (cartId) => {
         try {
             const response = await axios.delete(`/api/books/${cartId}/cart`);
-            // window.location.reload();
+            window.location.reload();
         }
         catch (error) {
             alert('해당 책을 장바구니에서 삭제할 수 없습니다.');
@@ -149,7 +131,7 @@ function Cart() {
                                     <th><button className="btn btn-outline-danger" onClick={() => deleteOneCart(cart.id)}>X</button></th>
                                 </tr>                                
                             <tr>
-                                <td><br/><br/><br/><br/><input type="checkbox" onChange={() => handleSelectBook(cart.id, cart.bookId, cart.quantity,cart.bookname, cart.price, cart.userId)} checked={selectedBooks.some(item => item.cartId === cart.id)} /></td>
+                                <td><br/><br/><br/><br/><input type="checkbox" onChange={() => handleSelectBook(cart.id, cart.bookId, cart.quantity, cart.bookname, cart.price, cart.userId)} checked={selectedBooks.some(item => item.cartId === cart.id)} /></td>
                                 <td><Link to={`/books/book/${cart.bookId}`}><img src={cart.imageUrl} style={{width:'100px',height:'175px'}} alt="이미지 없음" /></Link><br/><Link to={`/books/book/${cart.bookId}`}><strong>{cart.bookname}</strong></Link><br/><br/> </td>
                                 <td>{cart.price}원 <br/><br/>  <hr />{cart.quantity}권<br/><br/>  <hr />₩{cart.price * cart.quantity}</td>
                             </tr>                    
