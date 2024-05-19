@@ -28,20 +28,20 @@ function Cart() {
         event.preventDefault();
     
         const isConfirmed = window.confirm("장바구니에서 선택된 상품을 구매 하시겠습니까?");
-        
+    
         if(isConfirmed) {
             try {
                 // 결제 준비 요청
-                const paymentResponses = await Promise.all(selectedBooks.map(({ bookname, quantity, price}) =>
-                    axios.post(`/payment/ready`, {
-                        "bookname": bookname,
-                        "quantity": quantity,
-                        "price": price
-                    })
-                ));
+                const body = selectedBooks.map(({ bookname, quantity, price }) => ({
+                    bookname,
+                    quantity,
+                    price
+                }));
+    
+                const paymentResponse = await axios.post(`/payment/ready`, body);
     
                 // 여기에 구매 처리 요청을 추가
-                await Promise.all(selectedBooks.map(({ cartId, bookId, quantity }) => 
+                await Promise.all(selectedBooks.map(({ cartId, bookId, quantity }) =>
                     axios.post(`/api/books/${bookId}/${cartId}/purchase`, {
                         "cartId": cartId,
                         "bookId": bookId,
@@ -51,11 +51,16 @@ function Cart() {
     
                 // 결제 페이지 URL 결정
                 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                const paymentPageUrl = isMobile ? paymentResponses[0].data.next_redirect_mobile_url : paymentResponses[0].data.next_redirect_pc_url;
-                
+                let paymentPageUrl;
+                if (isMobile) {
+                    paymentPageUrl = paymentResponse.data.next_redirect_mobile_url;
+                } else {
+                    paymentPageUrl = paymentResponse.data.next_redirect_pc_url;
+                }
+    
                 // localStorage에 구매한 책 저장
                 localStorage.setItem('purchasedBooks', JSON.stringify(selectedBooks));
-                
+    
                 // 선택된 책 목록 초기화
                 setSelectedBooks([]);
     
@@ -69,6 +74,7 @@ function Cart() {
             window.location.reload();
         }
     }
+    
     
 
     const deleteAllCart = async () => {

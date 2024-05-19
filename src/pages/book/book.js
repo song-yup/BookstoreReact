@@ -91,11 +91,11 @@ function Book() {
     
         if (isConfirmed) {
             try {
-                const response = await axios.post(`/payment/ready`, {
+                const response = await axios.post(`/payment/ready`, [{
                     "bookname": book.bookname,
                     "quantity": purchaseQuantity,
                     "price": book.price
-                });
+                }]);
                 
                 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                 const paymentPageUrl = isMobile ? response.data.next_redirect_mobile_url : response.data.next_redirect_pc_url;
