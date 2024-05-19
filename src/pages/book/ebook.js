@@ -9,6 +9,8 @@ function EBooks() {
     const [book, setBook] = useState();
     const [ebook, setEBook] = useState();
     const [page, setPage] = useState(0);
+    const [image, setImage] = useState();
+    const [loadingImage, setLoadingImage] = useState(false); // 이미지 로딩 상태 추가
 
     useEffect(() => {
         if(id) {
@@ -23,17 +25,34 @@ function EBooks() {
             .then(response => setEBook(response.data))
             .catch(error => console.log(error));
         }
-    }, [id, page]); // 페이지 변화에 따라 useEffect를 다시 실행하도록 page를 의존성 배열에 추가합니다.
+    }, [id, page]);
 
-    // 페이지 증가 함수
     const increasePage = () => {
         setPage(prevPage => prevPage + 1);
+        setImage(undefined);
     };
 
-    // 페이지 감소 함수
     const decreasePage = () => {
         setPage(prevPage => prevPage - 1);
+        setImage(undefined);
     };
+
+    const AIimage = async (event) => {
+        event.preventDefault();
+        setLoadingImage(true); // 이미지 로딩 시작
+        try {
+            const response = await axios.post(`/api/texttoimage`, {
+                "contentEn":ebook.contentEn
+            });
+            setImage(response.data.images[0].image); // 이미지 설정
+            setLoadingImage(false); // 이미지 로딩 완료
+        } catch (error) {
+            alert('AI 이미지 생성에 실패했습니다.');            
+            console.error(error);
+            setLoadingImage(false); // 이미지 로딩 실패
+        }
+    }
+    
 
     if(!book || !ebook ) {
         return <h2>E-Book Loading...</h2>
@@ -60,6 +79,10 @@ function EBooks() {
                         &nbsp;
                         <button onClick={increasePage} className="btn btn-primary">다음 페이지</button>
                     </div>
+                </div>
+                <div style={{ border: '2px solid black', padding: '20px', margin: '20px 0', textAlign: 'center' }}>
+                        <button onClick={AIimage} className="btn btn-success float-right margin-class">AI 이미지 생성</button>
+                        {loadingImage ? <p>Image Loading...</p> : <img src={image} style={{width:'80%'}} alt="AI 생성 이미지"></img>}                        
                 </div>
             </div>  
         </html> 
