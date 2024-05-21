@@ -41,13 +41,13 @@ function Cart() {
                 const paymentResponse = await axios.post(`/payment/ready`, body);
     
                 // 여기에 구매 처리 요청을 추가
-                await Promise.all(selectedBooks.map(({ cartId, bookId, quantity }) =>
-                    axios.post(`/api/books/${bookId}/${cartId}/purchase`, {
-                        "cartId": cartId,
-                        "bookId": bookId,
-                        "quantity": quantity
-                    })
-                ));
+                // await Promise.all(selectedBooks.map(({ cartId, bookId, quantity }) =>
+                //     axios.post(`/api/books/${bookId}/${cartId}/purchase`, {
+                //         "cartId": cartId,
+                //         "bookId": bookId,
+                //         "quantity": quantity
+                //     })
+                // ));
     
                 // 결제 페이지 URL 결정
                 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

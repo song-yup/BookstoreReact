@@ -94,9 +94,7 @@ function AddBook() {
                         </div>
                         
                         <div className="form-group row">
-                            <form onSubmit={saveImage} className="form-horizontal">
-                                도서이미지 <input type="file" name="imageurl" value={book.imageurl} onChange={onChange} className="form-control" />                         
-                            </form>
+                            도서이미지 <input name="imageurl" value={book.imageurl} onChange={onChange} className="form-control" placeholder="Book Image URL" />                         
                         </div>
 
                         <br />

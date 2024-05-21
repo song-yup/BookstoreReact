@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
@@ -11,7 +11,9 @@ function EBooks() {
     const [page, setPage] = useState(0);
     const [image, setImage] = useState();
     const [loadingImage, setLoadingImage] = useState(false);
-    const [audioDownloadUrl, setAudioDownloadUrl] = useState(null); // 음성 파일 URL 상태 추가
+    const [audioDownloadUrl, setAudioDownloadUrl] = useState(null);
+    const [loadingAudio, setLoadingAudio] = useState(false);
+    const audioRef = useRef(null);
 
     useEffect(() => {
         if(id) {
@@ -32,27 +34,29 @@ function EBooks() {
         setPage(prevPage => prevPage + 1);
         setImage(undefined);
         setAudioDownloadUrl(null);
+        setLoadingAudio(false);
     };
 
     const decreasePage = () => {
         setPage(prevPage => prevPage - 1);
         setImage(undefined);
         setAudioDownloadUrl(null);
+        setLoadingAudio(false);
     };
 
     const AIimage = async (event) => {
         event.preventDefault();
-        setLoadingImage(true); // 이미지 로딩 시작
+        setLoadingImage(true);
         try {
             const response = await axios.post(`/api/texttoimage`, {
                 "contentEn":ebook.contentEn
             });
-            setImage(response.data.images[0].image); // 이미지 설정
-            setLoadingImage(false); // 이미지 로딩 완료
+            setImage(response.data.images[0].image);
+            setLoadingImage(false);
         } catch (error) {
-            alert('AI 이미지 생성에 실패했습니다.');            
+            alert('표지에서는 AI 이미지 생성을 지원하지 않습니다.');            
             console.error(error);
-            setLoadingImage(false); // 이미지 로딩 실패
+            setLoadingImage(false);
         }
     }
 
@@ -64,11 +68,11 @@ function EBooks() {
 
         const postUrl = '/api/texttospeech';
         const postData = {
-            "contentKo": ebook.contentKo // 이 부분에서 ebook.contentKo는 해당 변수에 할당된 텍스트 컨텐츠를 사용합니다. 
+            "contentKo": ebook.contentKo
         };
     
         try {
-            // POST 요청 보내기
+            setLoadingAudio(true);
             const postResponse = await fetch(postUrl, {
                 method: 'POST',
                 headers: {
@@ -82,7 +86,6 @@ function EBooks() {
             }
     
             const postResult = await postResponse.json();
-            // 생성된 URL을 가져옴: 이 부분을 수정하여 speak_v2_url을 사용
             const getUrl = postResult.result.speak_v2_url; 
     
             console.log(getUrl);
@@ -105,8 +108,7 @@ function EBooks() {
                 if (getResult.result.status === 'done') {
                     const audioDownloadUrl = getResult.result.audio_download_url;
                     console.log('Audio Download URL:', audioDownloadUrl);
-    
-                    // 음성 파일 URL 상태 업데이트
+
                     setAudioDownloadUrl(audioDownloadUrl);
                     
                 } else {
@@ -115,18 +117,18 @@ function EBooks() {
                 }
             };
 
-            // 최초 체크 실행
             checkStatus();
     
         } catch (error) {
             console.error('Fetch error:', error);
+            setLoadingAudio(false);
         }
     };
 
-    const playAudio = (url) => {
-        const audio = new Audio(url);
-        audio.play();
-    };
+    // const playAudio = (url) => {
+    //     const audio = new Audio(url);
+    //     audio.play();
+    // };
     
     if(!book || !ebook ) {
         return <h2>E-Book Loading...</h2>
@@ -153,14 +155,23 @@ function EBooks() {
                         &nbsp;
                         <button onClick={increasePage} className="btn btn-primary">다음 페이지</button>
                     </div>
+
+                    <br/>
+
                     <div>
-                        <button onClick={AIspeech} className="btn btn-secondary float-right margin-class">AI 음성 읽어주기</button>
+                        {!loadingAudio && !audioDownloadUrl && (
+                            <button onClick={AIspeech} className="btn btn-secondary">AI 음성 읽어주기</button>
+                        )}
+                        {loadingAudio && !audioDownloadUrl && <p>음성 파일 생성 중...</p>}
                         {audioDownloadUrl && (
-                            <button onClick={() => playAudio(audioDownloadUrl)} className="btn btn-secondary float-right margin-class">
-                                음성 재생
-                            </button>
+                            <>
+                                <audio ref={audioRef} src={audioDownloadUrl} controls style={{width: '100%'}}>
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </>
                         )}
                     </div>
+
                 </div>
                 <div style={{ border: '2px solid black', padding: '20px', margin: '20px 0', textAlign: 'center' }}>
                         <button onClick={AIimage} className="btn btn-success float-right margin-class">AI 이미지 생성</button>

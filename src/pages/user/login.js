@@ -79,11 +79,11 @@ function LoginForm() {
             
             <form className="form-signin" onSubmit={handleSubmit}>
                 <div className="form-group row">
-                      <input type="text" name="username" className="form-control" placeholder="User Name" required 
+                      <input type="text" name="username" className="form-control" placeholder="User Name" 
                       value={username} onChange={handleUsernameChange} />
                 </div>
                 <div className="form-group row">
-                    <input type="password" name="password" className="form-control" placeholder="PassWord" required 
+                    <input type="password" name="password" className="form-control" placeholder="PassWord"  
                     value={password} onChange={handlePasswordChange} />   
                 </div>
                 <div className="form-group row">

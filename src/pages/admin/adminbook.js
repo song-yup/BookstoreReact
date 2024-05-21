@@ -155,8 +155,6 @@ function Adminbook() {
                             <br />
 
                             <Link to={`/admin/adminbooks`} className="btn btn-secondary">도서목록 &raquo;</Link>
-                            {/* <Link to={`/cart`} className="btn btn-warning">장바구니 &raquo;</Link> */}
-
                         </div>
                     </div>
                 </div>

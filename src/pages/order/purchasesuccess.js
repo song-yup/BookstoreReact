@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import style from '../cart/style.css';
+import axios from 'axios';
 
 function Purchasesuccess () {
     const [user, setUser] = useState(null);
-    const [purchasedBooks, setPurchasedBooks] = useState(null);
+    const [purchasedBooks, setPurchasedBooks] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -15,6 +16,7 @@ function Purchasesuccess () {
                         'Content-Type': 'application/json',
                     },
                 });
+
                 if(response.ok) {
                     const data = await response.json();
                     setUser(data);
@@ -25,13 +27,44 @@ function Purchasesuccess () {
                 console.error('사용자 정보 요청 중 에러 발생:', error);
             }
         };
+
+        const sendPurchaseData = async (book) => {
+            try {
+                const url = book.cartId 
+                    ? `/api/books/${book.bookId}/${book.cartId}/purchase`
+                    : `/api/books/${book.bookId}/purchase`;
+                    
+                const payload = {
+                    bookId: book.bookId,
+                    quantity: book.quantity,
+                };
+
+                if (book.cartId) {
+                    payload.cartId = book.cartId;
+                }
+
+                const response = await axios.post(url, payload);
+
+                if (!response.status === 200) {
+                    console.error('구매 정보를 서버에 전송하는데 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('구매 정보 전송 중 에러 발생:', error);
+            }
+        };
+
         fetchUser();
-        
+
         // localStorage에서 구매 정보 가져오기
         const storedPurchasedBooks = localStorage.getItem('purchasedBooks');
         
         if (storedPurchasedBooks) {
-            setPurchasedBooks(JSON.parse(storedPurchasedBooks));
+            const parsedPurchasedBooks = JSON.parse(storedPurchasedBooks);
+            setPurchasedBooks(parsedPurchasedBooks);
+
+            parsedPurchasedBooks.forEach(book => {
+                sendPurchaseData(book);
+            });
         }
 
         console.log(storedPurchasedBooks);
@@ -81,7 +114,7 @@ function Purchasesuccess () {
                         </table>
                     </div>
 
-                    {purchasedBooks && (
+                    {purchasedBooks.length > 0 && (
                         <div className="table-container">
                             <table className="table table-hover">
                                 <thead>

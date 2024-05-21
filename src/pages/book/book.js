@@ -102,17 +102,18 @@ function Book() {
                 
                 window.location.href = paymentPageUrl;
 
-                axios.post(`/api/books/${id}/purchase`, {
-                    "quantity": purchaseQuantity,
-                    "bookId": id
-                }); 
+                // axios.post(`/api/books/${id}/purchase`, {
+                //     "quantity": purchaseQuantity,
+                //     "bookId": id
+                // }); 
                 
-                localStorage.setItem('purchasedBooks', JSON.stringify({
+                localStorage.setItem('purchasedBooks', JSON.stringify([{
                     "bookId": id, 
                     "quantity": purchaseQuantity, 
                     "bookname": book.bookname, 
                     "price": book.price
-                }));
+                }])
+                );
 
             } catch (error) {
                 console.error(error);
