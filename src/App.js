@@ -1,12 +1,10 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// 메뉴바 컴포넌트 로드
-import Clientmenubar from './layouts/clientmenubar.js'; // 클라이언트 메뉴바
-import Adminmenubar from './layouts/adminMenubar.js'; // 관리자 메뉴바
+import Clientmenubar from './layouts/clientmenubar.js';
+import Adminmenubar from './layouts/adminMenubar.js';
 import Footer from './layouts/footer.js';
 
-// 페이지들...
 import Books from './pages/book/books.js';
 import Book from './pages/book/book.js';
 import LogIn from './pages/user/login.js';
@@ -36,11 +34,10 @@ import { useEffect } from 'react';
 import axios from "axios";
 
 function MenubarSelector() {
-  let location = useLocation(); // 현재 URL 경로를 가져옵니다.
-  
-  // EBooks 페이지일 때 메뉴바를 표시하지 않습니다.
+  let location = useLocation();
+
   if (location.pathname.startsWith('/books/ebooks/')) {
-    return null; // 메뉴바가 필요 없으므로 null을 반환합니다.
+    return null;
   } else if (location.pathname.startsWith('/admin')) {
     return <Adminmenubar />;
   } else {
@@ -51,10 +48,8 @@ function MenubarSelector() {
 function App() {
 
   useEffect(() => {
-    // 서버에서 렌더링된 HTML 문서에서 CSRF 토큰을 가져오는 로직
     const csrfTokenMeta = document.querySelector("meta[name='_csrf']");
 
-    // CSRF 토큰이 존재하는지 확인 후 요청 헤더에 추가
     if (csrfTokenMeta) {
         const csrfToken = csrfTokenMeta.content;
         axios.defaults.headers.common["X-XSRF-TOKEN"] = csrfToken;

@@ -235,7 +235,7 @@ function Mypage() {
                        
                     <Link to={`/cart`} className="btn btn-outline-primary" role="button">장바구니 &raquo;</Link> 
                     &nbsp;
-
+                    
                     <Link to={`/purchase`} className="btn btn-primary" role="button">구매목록 &raquo;</Link> 
                 </div>
                 </div>

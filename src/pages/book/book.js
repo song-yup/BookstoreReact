@@ -101,11 +101,6 @@ function Book() {
                 const paymentPageUrl = isMobile ? response.data.next_redirect_mobile_url : response.data.next_redirect_pc_url;
                 
                 window.location.href = paymentPageUrl;
-
-                // axios.post(`/api/books/${id}/purchase`, {
-                //     "quantity": purchaseQuantity,
-                //     "bookId": id
-                // }); 
                 
                 localStorage.setItem('purchasedBooks', JSON.stringify([{
                     "bookId": id, 
@@ -196,7 +191,7 @@ function Book() {
             },
             body: JSON.stringify(commentsData)
         })
-        .then(response => response.json()) // 서버 응답을 JSON으로 변환
+        .then(response => response.json())
         .then(data => {
             setSummary(data.summary);
             console.log('Success:', data);
@@ -217,7 +212,6 @@ function Book() {
             alert('해당 도서는 E-Book 미리보기를 지원하지 않습니다.');
         });
     }
-    
     
     return (
         <html>
@@ -302,7 +296,7 @@ function Book() {
 
                         </div>
 
-                        <div className="col-md-10">
+                    <div className="col-md-10">
                         <br />
 
                         <div className="container" align="center">
@@ -342,8 +336,7 @@ function Book() {
 
                             <b>댓글</b>
                             
-                            <div>
-
+                        <div>
                             {comment && comment.map((comment) => (
                                 <div className="card" key={comment.id}>
                                     <div className="card-header">
@@ -372,30 +365,32 @@ function Book() {
                                                     <button className="btn btn-danger" onClick={() => deletecomment(comment.id)}>삭제 &raquo;</button>
                                                 </div>
                                             </>
-                                        )}
+                                            )
+                                        }
                                     </div>                           
                                 </div>   
-                            ))}             
-                                {comment.length === 0 && (
-                                    <div className="alert alert-info" role="alert">
-                                        작성된 댓글이 없습니다.
-                                    </div>
-                                )}                  
-                            </div>
+                            ))} 
 
-                            <br />
-
-                            <form onSubmit={createcomment} className="form-horizontal">
-                                <div className="d-flex">
-                                    <div className="col-sm-5">
-                                        <input name="content" value={newcomment} onChange={(e) => setNewcomment(e.target.value)} className="form-control" placeholder="댓글을 입력하세요"/>
-                                    </div>
-                                    <div className="col-sm-2">  
-                                        <button type="submit" className="btn btn-primary">등록</button>      
-                                    </div>
-                                </div>                                         
-                            </form>
+                            {comment.length === 0 && (
+                                <div className="alert alert-info" role="alert">
+                                    작성된 댓글이 없습니다.
+                                </div>
+                            )}                  
                         </div>
+
+                        <br />
+                            
+                        <form onSubmit={createcomment} className="form-horizontal">
+                            <div className="d-flex">
+                                <div className="col-sm-5">
+                                    <input name="content" value={newcomment} onChange={(e) => setNewcomment(e.target.value)} className="form-control" placeholder="댓글을 입력하세요"/>
+                                </div>
+                                <div className="col-sm-2">  
+                                    <button type="submit" className="btn btn-primary">등록</button>      
+                                </div>
+                            </div>                                         
+                        </form>
+                    </div>
                     </div>
                 </div>
             </body>

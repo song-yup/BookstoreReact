@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import DaumPostcode from "react-daum-postcode"; // Daum 주소 검색 컴포넌트를 import
+import DaumPostcode from "react-daum-postcode";
 import style from'./post.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -26,13 +26,13 @@ function Join() {
     });
 
     const [detailAddress, setDetailAddress] = useState("");
-    const [showModal, setShowModal] = useState(false); // 모달 표시 상태
+    const [showModal, setShowModal] = useState(false);
     
     const url="/api/joinProc";
 
     const onChange = (event) => {
         const { value, name } = event.target;
-        if (name === "detailAddress") { // 상세 주소 처리
+        if (name === "detailAddress") { 
             setDetailAddress(value);
         } else {
             setUser({
@@ -83,7 +83,6 @@ function Join() {
             console.error("회원 가입에 실패했습니다:", error);
             if (error.response && error.response.data) {
                 const errorData = error.response.data;
-                // 서버로부터 받은 오류 메시지를 해당 필드에 맞게 설정
                 setErrors({
                     username: errorData.username || "",
                     password: errorData.password || "",
@@ -159,16 +158,6 @@ function Join() {
                         </div>
                         )}
                         
-                        {/* <div className="form-group row">
-                            주소 <input name="address" value={user.address} className="form-control" readOnly onClick={() => setShowPost(true)} placeholder="Address" />
-                            {showPost && <div className="form-group row"><DaumPostcode className="modal_body" onComplete={completeAddress} /></div>}
-                        </div>
-                        {errors.address && (
-                        <div className="alert alert-danger" role="alert">
-                            {errors.address}
-                        </div>
-                        )} */}
-
                         <div className="form-group row">
                             주소
                             <input name="address" value={user.address} className="form-control" readOnly placeholder="Address" />

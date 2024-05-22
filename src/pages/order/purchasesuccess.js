@@ -55,7 +55,6 @@ function Purchasesuccess () {
 
         fetchUser();
 
-        // localStorage에서 구매 정보 가져오기
         const storedPurchasedBooks = localStorage.getItem('purchasedBooks');
         
         if (storedPurchasedBooks) {

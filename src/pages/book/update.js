@@ -4,7 +4,7 @@ import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "re
 import axios from 'axios';
 
 function Update() {
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
     
     const { id } = useParams();
     const [book, setBook] = useState();
@@ -61,14 +61,6 @@ function Update() {
                 <div className="container">
                     <div className="row">
                         <form onSubmit={editBook} className="form-horizontal">
-                            {/* <div className="form-group row">
-                                <label className="col-sm-2 control-label">
-                                    도서 ID
-                                </label>
-                                <div className="col-sm-6">
-                                    <input name="id" value={book.id} onChange={onChange} className="form-control" />
-                                </div>
-                            </div> */}
 
                             <span className="badge badge-info">{book.id}</span>
 
@@ -143,15 +135,6 @@ function Update() {
                                     <input type="date" name="releasedate" value={book.releasedate} onChange={onChange} className="form-control" />
                                 </div>                        
                             </div>
-
-                            {/* <div className="form-group row">
-                                <label className="col-sm-2 control-label">
-                                    도서이미지
-                                </label>
-                                <div className="col-sm-6">
-                                    <input type="file" name="imageurl" value={book.imageurl} onChange={onChange} className="form-control" />
-                                </div>                            
-                            </div> */}
 
                             <div className="form-group row">
                                 <div className="col-sm-offset-2 col-sm-10">

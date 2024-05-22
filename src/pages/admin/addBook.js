@@ -33,15 +33,6 @@ function AddBook() {
         });
       };
 
-      const saveImage = async (e) => {
-        e.preventDefault();
-        await axios.post(`/api/upload`).then((res) => {
-            alert("이미지가 등록되었습니다.");
-        }).catch((error) => {
-            alert("이미지 등록에 실패하였습니다.");
-        })
-      };
-
     return (
         <html>
             <head>

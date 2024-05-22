@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import DaumPostcode from "react-daum-postcode"; // Daum 주소 검색 컴포넌트를 import
+import DaumPostcode from "react-daum-postcode";
 import './post.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -28,7 +28,7 @@ function UpdateUser() {
     });
 
     const [detailAddress, setDetailAddress] = useState("");
-    const [showModal, setShowModal] = useState(false); // 모달 표시 상태
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -41,12 +41,10 @@ function UpdateUser() {
                 });
                 if(response.ok) {
                     const data = await response.json();
-                    // 마지막 ','의 위치 찾기
                     const lastCommaIndex = data.address.lastIndexOf(', ');
                     if(lastCommaIndex > -1) {
-                        // 마지막 ','를 기준으로 주소를 나누기
-                        setDetailAddress(data.address.substring(lastCommaIndex + 2)); // 상세 주소 설정
-                        data.address = data.address.substring(0, lastCommaIndex); // 주소 설정
+                        setDetailAddress(data.address.substring(lastCommaIndex + 2));
+                        data.address = data.address.substring(0, lastCommaIndex);
                     }
                     setUser(data);
                 } else {
@@ -67,7 +65,7 @@ function UpdateUser() {
 
     const onChange = (event) => {
         const { value, name } = event.target;
-        if (name === "detailAddress") { // 상세 주소 처리
+        if (name === "detailAddress") {
             setDetailAddress(value);
         } else {
             setUser({
@@ -118,7 +116,6 @@ function UpdateUser() {
             console.error("수정에 실패했습니다:", error);
             if (error.response && error.response.data) {
                 const errorData = error.response.data;
-                // 서버로부터 받은 오류 메시지를 해당 필드에 맞게 설정
                 setErrors({
                     username: errorData.username || "",
                     password: errorData.password || "",

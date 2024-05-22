@@ -1,10 +1,10 @@
 .table th, .table td {
-    min-width: 90px; /* 모든 열에 최소 너비를 설정 */
+    min-width: 90px;
     text-align: center;
 }
 .table img {
-    width: auto; /* 이미지 너비를 설정 */
-    height: auto; /* 이미지 높이를 자동 조정 */
+    width: auto;
+    height: auto;
 }
 .margin-class {
     margin-left: 10px;
@@ -13,14 +13,6 @@
 .table-container {
     overflow-x: auto;
 }
-
-/* .img_box {
-    overflow: hidden;
-	position: relative;
-	display: block;
-	box-sizing: border-box;
-	border: 1px solid #eaeaea;
-} */
 
 .table-hover {
     width: 100%;
@@ -32,7 +24,6 @@
     height: auto;
 }
 
-/* PC 환경에서 적용할 스타일 */
 @media screen and (min-width: 768px) {
     .responsive-img {
         width: 900px;

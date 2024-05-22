@@ -113,7 +113,7 @@ function EBooks() {
                     
                 } else {
                     console.log('Status가 done이 아닙니다. 다시 시도합니다...');
-                    setTimeout(checkStatus, 5000); // 5초 후에 다시 시도
+                    setTimeout(checkStatus, 5000);
                 }
             };
 
@@ -124,11 +124,6 @@ function EBooks() {
             setLoadingAudio(false);
         }
     };
-
-    // const playAudio = (url) => {
-    //     const audio = new Audio(url);
-    //     audio.play();
-    // };
     
     if(!book || !ebook ) {
         return <h2>E-Book Loading...</h2>

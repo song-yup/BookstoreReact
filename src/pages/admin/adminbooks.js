@@ -14,11 +14,10 @@ function Adminbooks() {
         axios.get(`${url}`)
         .then(response => {
             setBooks(response.data);
-            setStatusCode(response.status); // 응답에서 상태 코드를 설정
+            setStatusCode(response.status);
         })
         .catch(error => {
             console.log(error);
-            // 에러 응답에서 상태 코드가 존재하는 경우 설정
             if (error.response) {
                 setStatusCode(error.response.status);
             }
@@ -45,7 +44,6 @@ function Adminbooks() {
         return <h2>관리자 권한이 없습니다!</h2>;
     }
 
-    
     return (
         <html>
             <head>

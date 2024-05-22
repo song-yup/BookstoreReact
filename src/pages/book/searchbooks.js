@@ -43,8 +43,8 @@ function Searchbooks() {
                         {books && books.map((book, index) => (
                             <div className="col-12 d-flex mb-4" key={book.id}
                                 style={{
-                                    borderBottom: index !== books.length - 1 ? '1px solid #dee2e6' : '', // 마지막 항목에는 선을 추가하지 않습니다.
-                                    paddingBottom: '1rem' // 구분선과 컨텐츠 사이에 공간을 추가합니다.
+                                    borderBottom: index !== books.length - 1 ? '1px solid #dee2e6' : '',
+                                    paddingBottom: '1rem'
                                 }}
                             >
                                 <div>

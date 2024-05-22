@@ -7,12 +7,9 @@ import { useAuth } from './authcontext';
 function LoginForm() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  
-  // 상태 관리를 위한 useState 훅 사용
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // 입력 필드 변경 이벤트 핸들러
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -21,13 +18,12 @@ function LoginForm() {
     setPassword(event.target.value);
   };
 
-  // 폼 제출 이벤트 핸들러
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const axiosConfig = axios.create ({
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded" //모든 문자들은 서버로 보내기 전 인코딩됩니다
+        "Content-Type": "application/x-www-form-urlencoded"
       },
       withCredentials: true,
     });
@@ -55,7 +51,6 @@ function LoginForm() {
       window.location.reload();
     });
   };
-
 
   return (
     <html>
@@ -90,10 +85,6 @@ function LoginForm() {
                     <button className="btn btn-lg btn-success btn-block" type="submit">로그인</button>
                 </div>                
             </form>
-            
-            {/* <div className="form-group row">
-                <Link to={'/join'} className="btn btn-lg btn-danger btn-block" role="button">회원가입</Link>
-            </div> */}
         </div>
     </div>
     </body>        

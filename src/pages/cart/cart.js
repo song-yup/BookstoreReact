@@ -31,7 +31,6 @@ function Cart() {
     
         if(isConfirmed) {
             try {
-                // 결제 준비 요청
                 const body = selectedBooks.map(({ bookname, quantity, price }) => ({
                     bookname,
                     quantity,
@@ -39,17 +38,7 @@ function Cart() {
                 }));
     
                 const paymentResponse = await axios.post(`/payment/ready`, body);
-    
-                // 여기에 구매 처리 요청을 추가
-                // await Promise.all(selectedBooks.map(({ cartId, bookId, quantity }) =>
-                //     axios.post(`/api/books/${bookId}/${cartId}/purchase`, {
-                //         "cartId": cartId,
-                //         "bookId": bookId,
-                //         "quantity": quantity
-                //     })
-                // ));
-    
-                // 결제 페이지 URL 결정
+
                 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                 let paymentPageUrl;
                 if (isMobile) {
@@ -57,14 +46,11 @@ function Cart() {
                 } else {
                     paymentPageUrl = paymentResponse.data.next_redirect_pc_url;
                 }
-    
-                // localStorage에 구매한 책 저장
+
                 localStorage.setItem('purchasedBooks', JSON.stringify(selectedBooks));
-    
-                // 선택된 책 목록 초기화
+
                 setSelectedBooks([]);
-    
-                // 결제 페이지로 리다이렉트
+
                 window.location.href = paymentPageUrl;
             } catch (error) {
                 alert('책 구매를 실패하였습니다.');
