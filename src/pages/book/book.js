@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
+import { useAuth } from "../user/authcontext";
 
 function Book() {
     const navigate = useNavigate();
@@ -18,6 +19,8 @@ function Book() {
     const [summary, setSummary] = useState('');
     const [bookdetail, setBookdetail] = useState('');
     const [page, setPage] = useState(0);
+    const { isLoggedIn } = useAuth();
+    const username = localStorage.getItem('username');
 
     const increaseQuantity = () => {
       setCartQuantity(prevQuantity => prevQuantity + 1);
@@ -306,8 +309,8 @@ function Book() {
                         <br />
                         <br />               
 
-                        <div className="col-md-10">
-                            {book.description}
+                        <div className="col-md-12">
+                            <p>{book.description}</p>
                         </div>
 
                         <br />
@@ -359,11 +362,13 @@ function Book() {
                                         ) : (
                                             <>
                                                 {comment.content}
-                                                <div className="float-right">
-                                                    <button className="btn btn-success" onClick={() => startEdit(comment)}>수정 &raquo;</button>              
-                                                    &nbsp;
-                                                    <button className="btn btn-danger" onClick={() => deletecomment(comment.id)}>삭제 &raquo;</button>
-                                                </div>
+                                                {isLoggedIn && comment.username === username && ( // 로그인 상태이고, 현재 로그인한 사용자의 댓글일 경우에만 버튼 표시
+                                                    <div className="float-right">
+                                                        <button className="btn btn-success" onClick={() => startEdit(comment)}>수정 &raquo;</button>
+                                                        &nbsp;
+                                                        <button className="btn btn-danger" onClick={() => deletecomment(comment.id)}>삭제 &raquo;</button>
+                                                    </div>
+                                                )}
                                             </>
                                             )
                                         }

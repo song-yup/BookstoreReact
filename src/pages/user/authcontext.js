@@ -10,9 +10,11 @@ export function useAuth() {
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true' ? true : false);
 
-  const login = () => {
+  const login = async (username) => {
     setIsLoggedIn(true);
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('username', username);
+    console.log('Logged in user:', username);
   };
 
   const logout = async () => {
@@ -20,6 +22,7 @@ export const AuthProvider = ({ children }) => {
         await axios.post(`/logout`);
         setIsLoggedIn(false);
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
     } catch (error) {
         console.error("로그아웃에 실패했습니다:", error);
         alert('로그아웃에 실패했습니다.');
