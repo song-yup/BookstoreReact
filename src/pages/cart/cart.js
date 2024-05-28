@@ -61,8 +61,6 @@ function Cart() {
         }
     }
     
-    
-
     const deleteAllCart = async () => {
         const isConfirmed = window.confirm("장바구니의 모든 상품을 삭제 하시겠습니까?");
 
@@ -97,10 +95,15 @@ function Cart() {
                 <title>Cart</title>
             </head>
             <body>
-                <div className="jumbotron"> 
-                    <div className="container">
-                        <h1 className="display-3" align="center">장바구니</h1>
-                        <h5 className="display-5" align="center">My Cart</h5>
+                <div className="jumbotron" style={{ 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/display/[%EA%B5%90%EB%B3%B4%EB%AC%B8%EA%B3%A0eBook]%EB%B0%B0%EB%84%88%ED%82%A4%EB%93%9C_%EC%9D%B4%EB%B2%A4%ED%8A%B8_v4_03_8ccf3218f6cd44ddbda2f683900ed7b2.jpg)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    backgroundRepeat: 'no-repeat' 
+                }}> 
+                    <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>장바구니</h1>
+                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>My Cart</h5>
                     </div>
                 </div>
 

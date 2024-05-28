@@ -143,7 +143,7 @@ function EBooks() {
                     {
                         page === 0
                         ? <img src={ebook.contentKo} alt="E-Book Image" style={{width:'40%'}} />
-                        : <pre style={{whiteSpace: 'pre-wrap', wordWrap: 'break-word'}}>{ebook.contentKo}</pre>
+                        : <pre style={{whiteSpace: 'pre-wrap', wordWrap: 'break-word'}} className='ebookcontent'>{ebook.contentKo}</pre>
                     }
                     <div style={{ marginTop: '20px' }}>
                         <button onClick={decreasePage} disabled={page === 0} className="btn btn-primary">이전 페이지</button>

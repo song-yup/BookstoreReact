@@ -1,0 +1,192 @@
+.card {
+    position: relative;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #d8e9f2;
+}
+
+.card-img {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.card-body {
+    padding-right: 150px;
+}
+
+.card-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'KCC-Ganpan';
+}
+
+.btn-secondary {
+    right: 10px;
+}
+
+.btn-primary {
+    right: 110px;
+}
+
+@font-face {
+    font-family: 'KCC-Ganpan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCC-Ganpan.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KBO-Dia-Gothic_bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+.card-title {
+    font-family: 'KBO-Dia-Gothic_bold';
+}
+
+.form-control {
+    font-family: 'KCC-Ganpan';
+}
+
+.card-text {
+    font-family: 'KCC-Ganpan';
+}
+
+.card-header {
+    font-family: 'KCC-Ganpan';
+}
+
+.card-body {
+    font-family: 'KCC-Ganpan';    
+}
+
+.btn-primary {
+    font-family: 'KCC-Ganpan';    
+}
+
+.btn-secondary {
+    font-family: 'KCC-Ganpan';    
+}
+
+.btn-success {
+    font-family: 'KCC-Ganpan';   
+}
+.btn-danger {
+    font-family: 'KCC-Ganpan';  
+}
+.btn-outline-primary {
+    font-family: 'KCC-Ganpan';  
+}
+
+.table-hover {
+    font-family: 'KCC-Ganpan';  
+}
+.ebookcontent {
+    font-family: 'KBO-Dia-Gothic_bold';
+}
+
+.search {
+    position: relative;
+    width: 50%;
+  }
+  
+  .search input {
+    width: 100%;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 20px;
+  }
+  
+  .search img {
+    position: absolute;
+    width: 20px;
+    top: 10px;
+    right: 12px;
+    margin: 0;
+  }
+
+
+@media (max-width: 768px) {
+    .card-body {
+        padding-right: 0; 
+    }
+
+    .card-button {
+        position: static;
+        transform: none;
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        font-family: 'KCC-Ganpan';
+    }
+
+    .btn-secondary, .btn-primary {
+        width: auto;
+        padding: 10px; 
+        font-size: 14px; 
+        border-radius: 5px;
+        font-family: 'KCC-Ganpan';
+    }
+
+    .card-img {
+        width:45%; /* 모바일 화면에서 이미지의 너비 지정 */
+        height: auto; /* 이미지의 높이를 자동으로 조정하여 비율 유지 */
+        float: left; /* 이미지를 왼쪽으로 플로팅 */
+        margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조정 */
+    }
+
+    @font-face {
+        font-family: 'KCC-Ganpan';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCC-Ganpan.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
+    .card-text {
+        overflow: hidden; /* 텍스트가 이미지 옆에 잘 보이도록 함 */
+        font-family: 'KCC-Ganpan';
+    }
+    @font-face {
+        font-family: 'KBO-Dia-Gothic_bold';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+        font-weight: 700;
+        font-style: normal;
+    }
+    .card-title {
+        font-family: 'KBO-Dia-Gothic_bold';
+    }
+
+    .card-header {
+        font-family: 'KCC-Ganpan';
+    }
+    
+    .card-body {
+        font-family: 'KCC-Ganpan';    
+    }
+
+    .search {
+        position: relative;
+        width: 300px;
+      }
+
+    .search input {
+        width: 100%;
+        border: 1px solid #bbb;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      
+      .search img {
+        position: absolute;
+        width: 17px;
+        top: 10px;
+        right: 12px;
+        margin: 0;
+      }
+}
+

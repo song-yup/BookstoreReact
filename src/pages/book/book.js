@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams, BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import { useAuth } from "../user/authcontext";
+import './book.css';
 
 function Book() {
     const navigate = useNavigate();
@@ -223,10 +223,15 @@ function Book() {
             </head>
 
             <body>
-                <div className="jumbotron"> 
-                    <div className="container">
-                        <h1 className="display-3" align="center">도서 정보</h1>
-                        <h5 className="display-5" align="center">Book Details</h5>
+                <div className="jumbotron" style={{ 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/pmtn/2024/event/71778f7a3ef04d9da10d3b2e6f8133da.jpg)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    backgroundRepeat: 'no-repeat' 
+                }}> 
+                    <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>도서 정보</h1>
+                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>Book Details</h5>
                     </div>
                 </div>
 
@@ -237,15 +242,15 @@ function Book() {
                         </div>
                         
                         <div className="col-md-8" align="center">
-                            <h3>{book.bookname}</h3>
+                            <h3 className="card-title">{book.bookname}</h3>
                             <br />
-                            <p><b>도서코드 : </b><span className="badge badge-info">{book.id}</span></p>
-                            <p><b>저자</b> : {book.author}</p>
-                            <p><b>출판사</b> : {book.publisher}</p>
-                            <p><b>출판일</b> : {book.releasedate}</p>
-                            <p><b>분류</b> : {book.category}</p>
-                            <p><b>재고수</b> : {book.unitsinstock}</p>
-                            <h4>₩{book.price}</h4>
+                            <p className="card-text"><b>도서코드 : </b><span className="badge badge-info">{book.id}</span></p>
+                            <p className="card-text"><b>저자</b> : {book.author}</p>
+                            <p className="card-text"><b>출판사</b> : {book.publisher}</p>
+                            <p className="card-text"><b>출판일</b> : {book.releasedate}</p>
+                            <p className="card-text"><b>분류</b> : {book.category}</p>
+                            <p className="card-text"><b>재고수</b> : {book.unitsinstock}</p>
+                            <h4 className="card-text">₩{book.price}</h4>
                             <div>
                                 <div>
                                     <button 
@@ -264,7 +269,7 @@ function Book() {
                                     >
                                         +
                                     </button>
-                                    <button className="btn btn-success" onClick={cart}>장바구니에 추가 &raquo;</button>
+                                    <button className="btn btn-secondary" onClick={cart}>장바구니</button>
                                 </div>
                                 
                             </div>
@@ -289,11 +294,11 @@ function Book() {
                                     >
                                         +
                                     </button>
-                                    <button className="btn btn-danger" onClick={purchase}>바로 구매하기 &raquo;</button>
+                                    <button className="btn btn-primary" onClick={purchase}>바로구매</button>
                                 </div>
 
                                 <br />
-                                <button className="btn btn-primary" onClick={showebook}>E-Book 미리보기</button>
+                                <button className="btn btn-success" onClick={showebook}>E-Book 미리보기</button>
 
                             </div>
 
@@ -310,7 +315,9 @@ function Book() {
                         <br />               
 
                         <div className="col-md-12">
-                            <p>{book.description}</p>
+                            <div className="card" style={{padding: '20px'}}> {/* 여기에서 padding 값을 조정하세요 */}
+                                <p className="card-text">{book.description}</p>                                
+                            </div>
                         </div>
 
                         <br />
@@ -329,19 +336,19 @@ function Book() {
                                     AISummary(commentsData);
                                 }
                             }}>
-                                <strong>모든 댓글 AI 요약</strong>
-                                <textarea name="summary" className="form-control" style={{width: '100%', height: '100px'}} value={summary} placeholder="AI Comment Summary" readOnly/> 
+                                <strong className="card-text">모든 댓글 AI 요약</strong>
+                                <textarea name="summary" className="form-control" style={{width: '100%', height: '150px'}} value={summary} placeholder="AI Comment Summary" readOnly/> 
                                 <br />
-                                <button className="btn btn-primary">요약하기</button>
+                                <button className="btn btn-primary float-right">요약하기</button>
                             </form>
-
+                            <br/>
                             <br />
 
-                            <b>댓글</b>
+                            <b className="card-text">댓글</b>
                             
                         <div>
                             {comment && comment.map((comment) => (
-                                <div className="card" key={comment.id}>
+                                <div className="commentcard" key={comment.id}>
                                     <div className="card-header">
                                         {comment.username}  
                                     </div>
@@ -349,9 +356,7 @@ function Book() {
                                         {editingCommentId === comment.id ? (
                                             <>
                                                 <div className="d-flex">
-                                                    <div className="col-sm-5">
-                                                        <input value={editingContent} onChange={(e) => setEditingContent(e.target.value)} className="form-control"/>
-                                                    </div>
+                                                        <input value={editingContent} onChange={(e) => setEditingContent(e.target.value)} style={{width: '50%', height: '50px'}} className="form-control"/>
                                                     <div className="float-righ">  
                                                         <button className="btn btn-success" onClick={() => saveComment(comment.id)}>저장</button> 
                                                         &nbsp;
@@ -364,9 +369,9 @@ function Book() {
                                                 {comment.content}
                                                 {isLoggedIn && comment.username === username && ( // 로그인 상태이고, 현재 로그인한 사용자의 댓글일 경우에만 버튼 표시
                                                     <div className="float-right">
-                                                        <button className="btn btn-success" onClick={() => startEdit(comment)}>수정 &raquo;</button>
+                                                        <button className="btn btn-success" onClick={() => startEdit(comment)}>수정</button>
                                                         &nbsp;
-                                                        <button className="btn btn-danger" onClick={() => deletecomment(comment.id)}>삭제 &raquo;</button>
+                                                        <button className="btn btn-danger" onClick={() => deletecomment(comment.id)}>삭제</button>
                                                     </div>
                                                 )}
                                             </>

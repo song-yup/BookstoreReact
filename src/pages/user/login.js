@@ -60,12 +60,17 @@ function LoginForm() {
       </head>
       <body>
         <div>
-          <div className="jumbotron"> 
-            <div className="container">
-              <h1 className="display-3" align="center">로그인</h1>
-              <h5 className="display-5" align="center">Log In</h5>
-            </div>
-        </div>
+                <div className="jumbotron" style={{ 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/pmtn/2024/event/1faf73ec67994dc3abde53607135d8fc.jpg)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    backgroundRepeat: 'no-repeat' 
+                }}> 
+                    <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>로그인</h1>
+                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>Log In</h5>
+                    </div>
+                </div>
 
         <div className="container col-md-4">
             <div className="text-center">

@@ -84,12 +84,17 @@ function Purchasesuccess () {
             </head>
 
             <body>
-                <div className="jumbotron"> 
-                    <div className="container">
-                        <h1 className="display-3" align="center">구매 완료</h1>
-                        <h5 className="display-5" align="center">Purchase Success</h5>
+                <div className="jumbotron" style={{ 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/display/i_1624_450_2_a540b652c3f241ef8a7d45740ac7696c.jpg)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    backgroundRepeat: 'no-repeat' 
+                }}> 
+                    <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>구매 완료</h1>
+                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>Purchase Success</h5>
                     </div>
-                </div>
+                </div>                
 
                 <div className="container">
                     <div className="text-center">

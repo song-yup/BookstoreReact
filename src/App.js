@@ -36,15 +36,21 @@ import axios from "axios";
 function MenubarSelector() {
   let location = useLocation();
 
+  const menubarStyle = {
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: 1000,
+  };
+
   if (location.pathname.startsWith('/books/ebooks/')) {
     return null;
   } else if (location.pathname.startsWith('/admin')) {
-    return <Adminmenubar />;
+    return <div style={menubarStyle}><Adminmenubar /></div>;
   } else {
-    return <Clientmenubar />;
+    return <div style={menubarStyle}><Clientmenubar /></div>;
   }
 }
-
 function App() {
 
   useEffect(() => {
@@ -61,31 +67,33 @@ function App() {
       <Router>
         <MenubarSelector />
         
-        <Routes>
-          <Route path="/books" element={<Books />} />
-          <Route path="/books/book/:id" element={<Book />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/admin/books/add" element={<AddBook />} />
-          <Route path="/join" element={<Join />} />
-          <Route path="/books/book/update/:id" element={<Update />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/mypage/update" element={<UpdateUser />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/purchase" element={<Purchase />} />
-          <Route path="/books/new" element={<NewBooks />} />
-          <Route path="/:category/books" element={<Categorybooks />} />
-          <Route path="/books/ranking" element={<RankingBooks />} />
-          <Route path="/books/search/:bookname" element={<Searchbooks />} />
-          <Route path="/admin/adminbooks" element={<Adminbooks />} />
-          <Route path="/admin/adminbook/:id" element={<Adminbook />} />
-          <Route path="/admin/adminstock" element={<Adminstock />} />
-          <Route path="/admin/admincalculate" element={<Admincalculate />} />
-          <Route path="/admin/adminsearch/:bookname" element={<Adminsearchbooks />} />
-          <Route path="/admin/adminsearchstock/:bookname" element={<Adminsearchstock />} />
-          <Route path="/purchase/success" element={<Purchasesuccess />} />
-          <Route path="/books/ebooks/:id/:page" element={<EBooks />} />
-        </Routes>
-        
+        <div style={{ marginTop: '60px' }}> {/* 메뉴바 높이만큼 마진 추가 */}
+          <Routes>
+            <Route path="/books" element={<Books />} />
+            <Route path="/books/book/:id" element={<Book />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/admin/books/add" element={<AddBook />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/books/book/update/:id" element={<Update />} />
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/mypage/update" element={<UpdateUser />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/purchase" element={<Purchase />} />
+            <Route path="/books/new" element={<NewBooks />} />
+            <Route path="/:category/books" element={<Categorybooks />} />
+            <Route path="/books/ranking" element={<RankingBooks />} />
+            <Route path="/books/search/:bookname" element={<Searchbooks />} />
+            <Route path="/admin/adminbooks" element={<Adminbooks />} />
+            <Route path="/admin/adminbook/:id" element={<Adminbook />} />
+            <Route path="/admin/adminstock" element={<Adminstock />} />
+            <Route path="/admin/admincalculate" element={<Admincalculate />} />
+            <Route path="/admin/adminsearch/:bookname" element={<Adminsearchbooks />} />
+            <Route path="/admin/adminsearchstock/:bookname" element={<Adminsearchstock />} />
+            <Route path="/purchase/success" element={<Purchasesuccess />} />
+            <Route path="/books/ebooks/:id/:page" element={<EBooks />} />
+          </Routes>
+        </div>
+
         <Footer />
       </Router>      
     </AuthProvider>

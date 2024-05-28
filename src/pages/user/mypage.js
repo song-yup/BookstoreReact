@@ -35,7 +35,7 @@ function Mypage() {
                 const response = await fetch(`/api/mypage`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json', 
                     },
                 });
                 if(response.ok) {
@@ -118,51 +118,46 @@ function Mypage() {
             </head>
 
             <body>
-                <div className="jumbotron"> 
-                    <div className="container">
-                        <h1 className="display-3" align="center">마이 메뉴</h1>
-                        <h5 className="display-5" align="center">My Menu</h5>
+                <div className="jumbotron" style={{ 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/pmtn/2024/event/1faf73ec67994dc3abde53607135d8fc.jpg)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    backgroundRepeat: 'no-repeat' 
+                }}> 
+                    <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>마이 메뉴</h1>
+                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>My Menu</h5>
                     </div>
                 </div>
 
                 <div className="container col-md-6">
-                    <div className="text-center">
-                        <h3 className="form-signin-heading">Check My Account</h3>
-                    </div>
-                    <div className="text-center mt-4">
-                        <p><strong>User ID</strong> : {user.username}</p>
-                    </div>
-
-                    <div className="text-center">
-                        <p><strong>Phone Num</strong> : {user.phoneNum}</p>
-                    </div>
-
-                    <div className="text-center">
-                        <p><strong>E-Mail</strong> : {user.email}</p>
-                    </div>
-
-                    <div className="text-center mb-4">
-                        <p><strong>Address</strong> : {user.address}</p>
-                    </div>
-
-
-                    <div className="container">
-                        <div className="text-center">
-                            <h5><strong>내가 작성한 댓글</strong></h5>
+                <div className="card">
+                    <div className="card-body">
+                        <h3 className="card-title text-left">Check My Account</h3>
+                        <div className="text-left mt-4">
+                            <p><strong>User ID</strong> : {user.username}</p>
                         </div>
-                        <div className="text-center">
-                            {showmycomment && comments && comments.map((comment) => (
-                                <li key={comment.id}><Link to={`/books/book/${comment.bookId}`}>{comment.bookname}</Link>: {comment.content}</li>
-                            ))}
+
+                        <div className="text-left">
+                            <p><strong>Phone Num</strong> : {user.phoneNum}</p>
+                        </div>
+
+                        <div className="text-left">
+                            <p><strong>E-Mail</strong> : {user.email}</p>
+                        </div>
+
+                        <div className="text-left mb-4">
+                            <p><strong>Address</strong> : {user.address}</p>
                         </div>
                     </div>
+                </div>
                 
-                    <br />
+                <br />
 
-                    <div className="container">
+                <div className="container">
                         <div className="text-center">
 
-                    <Button variant="success" onClick={() => handleShow('update')}>
+                <Button variant="success" onClick={() => handleShow('update')}>
                         회원 수정
                     </Button>
                     &nbsp;
@@ -195,8 +190,8 @@ function Mypage() {
                             </Modal.Footer>
                         </Modal>
                     )}
-                        
-                    <Button variant="danger" onClick={() => handleShow('delete')}>
+
+<Button variant="danger" onClick={() => handleShow('delete')}>
                         회원 탈퇴
                     </Button>
                     &nbsp;
@@ -229,9 +224,27 @@ function Mypage() {
                             </Modal.Footer>
                         </Modal>
                     )}
+                    </div>
+                    </div>
 
+
+                <div className="container">
+                    <div className="card mt-4">
+                        <div className="card-body">
+                            <h5 className="card-title text-left"><strong>내가 작성한 댓글</strong></h5>
+                            <ul className="text-left">
+                                {showmycomment && comments && comments.map((comment) => (
+                                    <li key={comment.id}><Link to={`/books/book/${comment.bookId}`}>{comment.bookname}</Link>: {comment.content}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
                     <br />
-                    <br />
+
+                    <div className="container">
+                        <div className="text-center">
                        
                     <Link to={`/cart`} className="btn btn-outline-primary" role="button">장바구니 &raquo;</Link> 
                     &nbsp;

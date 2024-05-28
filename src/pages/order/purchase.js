@@ -40,10 +40,15 @@ function Purchase() {
             </head>
 
             <body>
-                <div className="jumbotron"> 
-                    <div className="container">
-                        <h1 className="display-3" align="center">구매 목록</h1>
-                        <h5 className="display-5" align="center">Purchase List</h5>
+                <div className="jumbotron" style={{ 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/display/i_1624_450_ed5262a303f34baab514a37267ed18e1.png)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    backgroundRepeat: 'no-repeat' 
+                }}> 
+                    <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>구매 목록</h1>
+                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>Purchase List</h5>
                     </div>
                 </div>
 
