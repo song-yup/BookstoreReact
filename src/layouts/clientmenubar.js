@@ -39,8 +39,9 @@ const Clientmenubar = () => {
                             }
 
                             
-                            <Nav.Link as={Link} to="/books/new">신간도서</Nav.Link>
-                            <Nav.Link as={Link} to="/books/ranking">인기 도서 랭킹</Nav.Link>
+                            <Nav.Link as={Link} to="/books/new">신간 도서</Nav.Link>
+                            <Nav.Link as={Link} to="/books/ranking">인기 도서</Nav.Link>
+                            <Nav.Link as={Link} to="/books/ebooks">E-Books</Nav.Link>
 
                             <NavDropdown title="카테고리">
                                     <NavDropdown.Item as={Link} to={`/외국어/books`}>외국어</NavDropdown.Item>

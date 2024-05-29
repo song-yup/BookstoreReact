@@ -96,7 +96,7 @@ function Cart() {
             </head>
             <body>
                 <div className="jumbotron" style={{ 
-                    backgroundImage: 'url(https://contents.kyobobook.co.kr/display/[%EA%B5%90%EB%B3%B4%EB%AC%B8%EA%B3%A0eBook]%EB%B0%B0%EB%84%88%ED%82%A4%EB%93%9C_%EC%9D%B4%EB%B2%A4%ED%8A%B8_v4_03_8ccf3218f6cd44ddbda2f683900ed7b2.jpg)', 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/display/i_1624_450_f41467005d1b428bac28a04781683907.jpg)', 
                     backgroundSize: 'cover', 
                     backgroundPosition: 'center', 
                     backgroundRepeat: 'no-repeat' 

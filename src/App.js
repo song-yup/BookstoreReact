@@ -27,7 +27,8 @@ import Adminsearchbooks from './pages/admin/adminsearchbooks.js';
 import { AuthProvider } from './pages/user/authcontext.js';
 import Adminsearchstock from './pages/admin/adminsearchstock.js';
 import Purchasesuccess from './pages/order/purchasesuccess.js';
-import EBooks from './pages/book/ebook.js';
+import EBook from './pages/book/ebook.js';
+import EBooks from './pages/book/ebooks.js';
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from 'react';
@@ -90,7 +91,8 @@ function App() {
             <Route path="/admin/adminsearch/:bookname" element={<Adminsearchbooks />} />
             <Route path="/admin/adminsearchstock/:bookname" element={<Adminsearchstock />} />
             <Route path="/purchase/success" element={<Purchasesuccess />} />
-            <Route path="/books/ebooks/:id/:page" element={<EBooks />} />
+            <Route path="/books/ebooks/:id/:page" element={<EBook />} />
+            <Route path="/books/ebooks" element={<EBooks />} />
           </Routes>
         </div>
 

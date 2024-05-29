@@ -87,14 +87,14 @@ function NewBooks() {
                     backgroundRepeat: 'no-repeat' 
                 }}> 
                     <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
-                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>신간 도서 목록</h1>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>신간 도서</h1>
                         <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>New Books List</h5>
                     </div>
                 </div>
 
                 <div className="container">
                         <div className="row">
-                            {books && books.map((book, index) => (
+                            {books && books.map((book) => (
                                 <div className="col-12 d-flex mb-4" key={book.id}>
                                     <div className="card">
                                         <div className="row no-gutters">
@@ -119,6 +119,7 @@ function NewBooks() {
                                         </div>
                                         <button className="btn btn-secondary card-button" onClick={() => cart(book)}>장바구니</button>
                                         <button className="btn btn-primary card-button" onClick={() => purchase(book)}>바로구매</button>
+                                        <span className="badge badge-new">NEW</span>
                                     </div>
                                 </div>
                             ))}

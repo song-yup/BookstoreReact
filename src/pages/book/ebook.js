@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import { Navbar, Nav, Dropdown, Container } from "react-bootstrap";
 
-function EBooks() {
+function EBook() {
     const { id } = useParams();
     const [book, setBook] = useState();
     const [ebook, setEBook] = useState();
@@ -177,4 +177,4 @@ function EBooks() {
     );
 }
 
-export default EBooks;
+export default EBook;

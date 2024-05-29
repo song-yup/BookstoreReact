@@ -120,6 +120,9 @@ function Categorybooks() {
                                         </div>
                                         <button className="btn btn-secondary card-button" onClick={() => cart(book)}>장바구니</button>
                                         <button className="btn btn-primary card-button" onClick={() => purchase(book)}>바로구매</button>
+                                        {book.isNew && (
+                                            <span className="badge badge-new">NEW</span>
+                                        )}                                        
                                     </div>
                                 </div>
                             ))}

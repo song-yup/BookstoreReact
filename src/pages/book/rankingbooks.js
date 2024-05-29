@@ -87,7 +87,7 @@ function RankingBooks() {
                     backgroundRepeat: 'no-repeat' 
                 }}> 
                     <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
-                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>인기 도서 랭킹</h1>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>인기 도서</h1>
                         <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>New Books List</h5>
                     </div>
                 </div>
@@ -100,12 +100,24 @@ function RankingBooks() {
                                         <div className="row no-gutters">
                                             <div className="col-md-2">
                                                 <Link to={`/books/book/${book.id}`}>
+                                                    {/* <h3><span className="badge badge-info">{index + 1}</span></h3> */}
                                                     <img src={book.imageurl} className="card-img" alt={book.bookname} />
+                                                    <h3 style={{
+                                                        position: 'absolute',
+                                                        top: '0.02px',
+                                                        left: '0.02px',
+                                                        color: 'white',
+                                                        padding: '5px',
+                                                        borderRadius: '5px'
+                                                    }}>
+                                                        <span className="badge badge-info">{index + 1}</span>
+                                                    </h3>
                                                 </Link>
                                             </div>
                                             <div className="col-md-8">
                                                 <Link to={`/books/book/${book.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                                     <div className="card-body">
+                                                        
                                                         <h3 className="card-title">{book.bookname}</h3>
                                                         <p className="card-text">{book.author}</p>
                                                         <p className="card-text">{book.publisher} | {book.releasedate}</p>
@@ -119,6 +131,9 @@ function RankingBooks() {
                                         </div>
                                         <button className="btn btn-secondary card-button" onClick={() => cart(book)}>장바구니</button>
                                         <button className="btn btn-primary card-button" onClick={() => purchase(book)}>바로구매</button>
+                                        {book.isNew && (
+                                            <span className="badge badge-new">NEW</span>
+                                        )}                                        
                                     </div>
                                 </div>
                             ))}

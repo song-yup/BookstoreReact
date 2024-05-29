@@ -4,11 +4,11 @@ import { useNavigate, BrowserRouter as Router, Route, Link } from "react-router-
 import axios from 'axios';
 import './books.css';
 
-function Books() {
+function EBooks() {
     const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const [bookname, setBookname] = useState('');
-    const url="/api/books";
+    const url="/api/books/ebook";
 
     useEffect(() => {
         axios.get(`${url}`)
@@ -99,37 +99,20 @@ function Books() {
 
             <body>
                 <div className="jumbotron" style={{ 
-                    backgroundImage: 'url(https://contents.kyobobook.co.kr/pmtn/2024/event/71778f7a3ef04d9da10d3b2e6f8133da.jpg)', 
+                    backgroundImage: 'url(https://contents.kyobobook.co.kr/display/i_1624_450_ed5262a303f34baab514a37267ed18e1.png)', 
                     backgroundSize: 'cover', 
                     backgroundPosition: 'center', 
                     backgroundRepeat: 'no-repeat' 
                 }}> 
                     <div className="container" style={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: '20px', borderRadius: '10px' }}>
-                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>도서 목록</h1>
-                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>Books List</h5>
+                        <h1 className="display-3" align="right" style={{fontWeight: 'bold'}}>EBooks</h1>
+                        <h5 className="display-5" align="right" style={{fontWeight: 'bold'}}>EBooks List</h5>
                     </div>
                 </div>
 
-                <form className="d-flex justify-content-center" onSubmit={handleSubmit} style={{borderBottom: '1px solid #dee2e6', paddingBottom: '1rem'}}>
-                    <div className="search">
-                        <input 
-                        type="text" 
-                        name="bookname" 
-                        value={bookname} 
-                        className="form-control" 
-                        onChange={booknamechage} 
-                        placeholder="검색어 입력" 
-                        aria-label="Search" 
-                        />
-                        <button type="submit" style={{background: 'none', border: 'none', padding: 0}}>
-                            <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" alt="Search Icon" />
-                        </button>
-                    </div>
-                </form>
-
                 <div className="container">
                         <div className="row">
-                            {books && books.map((book, index) => (
+                            {books && books.map((book) => (
                                 <div className="col-12 d-flex mb-4" key={book.id}>
                                     <div className="card">
                                         <div className="row no-gutters">
@@ -168,4 +151,4 @@ function Books() {
     );
 }
 
-export default Books;
+export default EBooks;
